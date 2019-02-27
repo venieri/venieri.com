@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% load vtags %}
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lydia Venieri</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+
+    </head>
+    <body>
+
+{% block about %} {% endblock %}
+{% block banner %} {% endblock %}
+<!--<div class="uk-section">-->
+    <!--<div class="uk-container">-->
+ <!--<div class="uk-cover-container uk-height-medium">-->
+     <!--{% art pk=8 as banner %}-->
+        <!--<img src="{{banner.poster.url}}" alt="Lydia Venieri, {{banner.title}} {{banner.date}}" uk-cover>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+{% block content %}
+<div class="uk-section">
+    <div class="uk-container uk-container-small">
+                <style>
+                   {{event.css|safe}}
+               </style>
+
+                    <article class="uk-article {{event.slug}}">
+                        <h2 class="uk-article-title"><a class="uk-link-reset" href="">{{event.title}}</a></h2>
+                        <div class="uk-cover-container uk-height-large"  >
+                            <img src="{{event.poster.poster.url}}" alt="Lydia Venieri, {{event.title}}" uk-cover>
+                        </div>
+                        <p class="uk-article-meta">{{event.date}}</p>
+                <p class="uk-text-lead">
+                     {% render event.leader %}
+                </p>
+             <p>
+                     {% render event.content %}
+             </p>
+
+                    </article>
+
+
+    </div>
+</div>
+
+{% endblock %}
