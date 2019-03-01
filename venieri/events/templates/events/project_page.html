@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+
+<!--<p class="meta">{{ page.date }}</p>-->
+
+<!--{% with categories=page.categories.all %}-->
+    <!--{% if categories %}-->
+        <!--<h3>Posted in:</h3>-->
+        <!--<ul>-->
+            <!--{% for category in categories %}-->
+                <!--<li style="display: inline">-->
+                    <!--{% image category.icon fill-32x32 style="vertical-align: middle" %}-->
+                    <!--{{ category.name }}-->
+                <!--</li>-->
+            <!--{% endfor %}-->
+        <!--</ul>-->
+    <!--{% endif %}-->
+<!--{% endwith %}-->
+
+  <article class="uk-article">
+
+    <h1 class="uk-margin-remove uk-h3"><a class="uk-link-reset" href="">{{ page.title }}</a></h1>
+
+  {{ page.body|richtext }}
+
+<div class="uk-child-width-1-2@s uk-child-width-1-3@m  uk-child-width-1-4@l" uk-grid="masonry: true" uk-lightbox="animation: slide">
+
+        {% for item in page.gallery_images.all %}
+    <div>
+         {% image item.image width-900 as main_image %}
+        <a class="uk-inline" uk-tooltip="{{ item.image.title }}<br/>{{item.image.description|linebreaksbr}}"
+           href="{{main_image.url}}" data-caption="{{item.image.title}} ">
+                 <img  src="{{main_image.url}}" alt="Lydia Venieri - {{ item.image.title }}"   uk-img>
+        </a>
+    </div>
+            {% endfor %}
+</div>
+
+
+    <!--<p class="uk-text-lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>-->
+
+
+    <!--<div class="uk-grid-small uk-child-width-auto" uk-grid>-->
+        <!--<div>-->
+            <!--<a class="uk-button uk-button-text" href="#">Read more</a>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<a class="uk-button uk-button-text" href="#">5 Comments</a>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--<div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow>-->
+    <!--<ul class="uk-slideshow-items"  >-->
+        <!--{% for item in page.gallery_images.all %}-->
+        <!--<li uk-tooltip="{{ item.image.title }}<br/>{{item.image.description|linebreaksbr}}" >-->
+            <!--&lt;!&ndash;<div class="uk-card uk-card-default uk-card-body uk-padding-remove" >&ndash;&gt;-->
+            <!--<div>-->
+                <!--<h2 style="color:black" class="uk-margin-small-bottom uk-h4">{{ item.image.title }}</h2>-->
+                            <!--{% image item.image height-350 as main_image %}-->
+                        <!--{% if forloop.first %}-->
+                          <!--<img  data-src="{{main_image.url}}" alt="Lydia Venieri - {{ item.image.title }}"   width="750" height="350" uk-cover uk-img="target: !ul > :last-child, !* +*">-->
+                        <!--{% else %}-->
+                            <!--{% if forloop.last %}-->
+                                <!--<img data-src="{{main_image.url}}" alt="Lydia Venieri - {{ item.image.title }}"   width="750" height="350" uk-cover uk-img="target: !* -*, !ul > :first-child">-->
+                            <!--{% else %}-->
+                                 <!--<img data-src="{{main_image.url}}" alt="Lydia Venieri - {{ item.image.title }}"  width="750" height="350" uk-cover uk-img="target: !* -*, !* +*">-->
+                            <!--{% endif %}-->
+                        <!--{% endif %}-->
+
+
+
+                <!--</div>-->
+        <!--</li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
+
+      <!--<a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>-->
+    <!--<a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>-->
+
+<!--</div>-->
+</article>
+
+
+
+
+
+{% if page.tags.all.count %}
+    <div class="tags">
+        <h3>Tags</h3>
+        {% for tag in page.tags.all %}
+            <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% endblock %}

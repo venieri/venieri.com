@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+
+{% load wagtailcore_tags wagtailimages_tags event_tags %}
+
+{% block body_class %}template-projectpage{% endblock %}
+
+
+
+{% block content %}
+<h2>Art</h2>
+
+
+  <div uk-filter="target: .js-filter">
+
+    <div class="uk-grid-small uk-grid-divider uk-child-width-auto uk-flex-middle" uk-grid>
+        <div>
+            <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                <li class="uk-active" uk-filter-control><a href="#">All</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                <li uk-filter-control="filter: [data-color='white']; group: data-color"><a href="#">White</a></li>
+                <li uk-filter-control="filter: [data-color='blue']; group: data-color"><a href="#">Blue</a></li>
+                <li uk-filter-control="filter: [data-color='black']; group: data-color"><a href="#">Black</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                <li uk-filter-control="filter: [data-size='2017']; group: year"><a href="#">2017</a></li>
+                <li uk-filter-control="filter: [data-size='2006']; group: year"><a href="#">2006</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <ul class="js-filter uk-child-width-1-2@s uk-child-width-1-4@m uk-child-width-1-5@l uk-text-center" uk-grid="masonry: true">
+        {% for art in art_pages %}
+          {% with art=art.specific %}
+            <li data-color="white" data-size="{{art.date}}">
+
+             <!--<div class="uk-card uk-card-default"  >-->
+                <div class="uk-panel">
+                {% with img=art.get_image %}
+                {% image img height-200 as img %}
+                {% if img %}
+                    <a class="uk-link-reset" href="{% pageurl art %}">
+                        <img src="{{img.url}}" alt="Lydia Venieri, {{art.title}}" uk-img>
+                    </a>
+                {% endif %}
+                {% endwith %}
+                 <!--<a class="uk-link-reset" href="{% pageurl art %}">-->
+                      <!--<h2 class="uk-h4 uk-text-center">{{ art.title }}</h2>-->
+                 <!--</a>-->
+            </div>
+             </li>
+        <!--</div>-->
+                {% endwith %}
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

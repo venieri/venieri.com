@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% load wagtailcore_tags wagtailimages_tags event_tags %}
+
+{% block body_class %}template-projectpage{% endblock %}
+
+
+
+{% block content %}
+<h2>Projects</h2>
+<div class="uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid="masonry: true">
+
+        {% for project in project_pages %}
+      <div>
+           {% with project=project.specific %}
+
+        <div class="uk-card uk-card-default"  >
+            <div class="uk-panel">
+
+
+                {% image project.main_image width-800 as main_image %}
+
+                {% if main_image %}
+                    <a class="uk-link-reset" href="{% pageurl project %}">
+                        <img src="{{main_image.url}}" alt="Lydia Venieri, {{event.title}}" uk-img>
+                    </a>
+                {% endif %}
+                 <a class="uk-link-reset" href="{% pageurl project %}">
+                     <h2 class="uk-h4 uk-text-center"> {{ project.title }}</h2>
+                 </a>
+
+            </div>
+
+        </div>
+       {% endwith %}
+      </div>
+
+
+        {% endfor %}
+{% endblock %}
