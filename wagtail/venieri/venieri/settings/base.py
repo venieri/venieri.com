@@ -232,3 +232,17 @@ KEY_PATH = os.path.join(BASE_DIR, ' keys')
 KEY_PREFIX = 'lv00'
 
 AUTO_CREATE_KEYS=os.environ.get('AUTO_CREATE_KEYS', False)
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'venieri',
+        'USER': 'venieri',
+        'PASSWORD': os.environ.get('VENIERI_DB_PASSWORD'),
+        'HOST': 'web625.webfaction.com',
+        'PORT': '5432',
+    }
+}
+
+
