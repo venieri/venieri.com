@@ -1,7 +1,8 @@
 from django.utils.html import format_html
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register)
-
+from wagtail.core import hooks
+from wagtail.core.models import Orderable, Page
 from .models import EventPage
 
 
@@ -28,3 +29,12 @@ class EventAdmin(ModelAdmin):
 
 # Now you just need to register your customised ModelAdmin class with Wagtail
 modeladmin_register(EventAdmin)
+
+
+
+
+@hooks.register('before_serve_page')
+def before_serve_page_function(page, request, args, kwargs):
+    if page.slug =='home':
+        page = Page.objects.get(slug='lydia-venieri')
+        return page.specific.serve(request, *args, **kwargs)

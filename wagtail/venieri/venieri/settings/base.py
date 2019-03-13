@@ -56,14 +56,12 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
 
     'django_crypto_fields.apps.AppConfig',
+    'django_extensions',
+    'storages',
     'wagtailmedia',
     'embed_video',
     'wagtail_embed_videos',
     'wagtailschemaorg',
-    # 'wagtailmenus',
-    # 'wagtailtinymce',
-
-
 ]
 
 # INSTALLED_APPS += [
@@ -87,7 +85,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -228,7 +228,7 @@ BAKERY_VIEWS = (
 
 # AUTO_CREATE_KEYS=True
 ETC_DIR='/etc/'
-KEY_PATH = os.path.join(BASE_DIR, ' keys')
+KEY_PATH = os.path.join(BASE_DIR, 'keys')
 KEY_PREFIX = 'lv00'
 
 AUTO_CREATE_KEYS=os.environ.get('AUTO_CREATE_KEYS', False)
@@ -243,6 +243,43 @@ DATABASES = {
         'HOST': 'web625.webfaction.com',
         'PORT': '5432',
     }
+}
+
+
+AWS_STORAGE_BUCKET_NAME = 'media.venieri.com'
+AWS_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+AWS_ACCESS_KEY_ID = 'AKIAJGPWIS23ZWYLYKBQ'
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', False)
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#
+#
+# MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+MEDIA_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AUTO_CREATE_KEYS=os.environ.get('AUTO_CREATE_KEYS', False)
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'venieri',
+        'USER': 'venieri',
+        'PASSWORD': os.environ.get('VENIERI_DB_PASSWORD'),
+        'HOST': "main.c78ooagihf4j.us-east-1.rds.amazonaws.com", #'web625.webfaction.com',
+        'PORT': '5432',
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    },
+    'TIMEOUT': 60,
+    'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
 }
 
 
