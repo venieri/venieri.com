@@ -14,7 +14,7 @@ class EventAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     list_display = ('start_date', 'title', 'venue', 'categories', 'get_image')
-    list_filter = ('start_date', 'categories', 'tags', 'date',)
+    list_filter = ('start_date', 'categories', 'tags',)
     search_fields = ('title', 'venue', 'body')
     ordering = ['-start_date']
 

@@ -42,7 +42,8 @@ class EventIndexPage(MetadataPageMixin, Page):
 
 
 class EventPage(PageLDMixin, MetadataPageMixin, Page):
-    date = models.DateField("Post date")
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=EventPageTag, blank=True)
@@ -60,7 +61,8 @@ class EventPage(PageLDMixin, MetadataPageMixin, Page):
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
-            FieldPanel('date'),
+            FieldPanel('start_date'),
+            FieldPanel('end_date'),
             FieldPanel('tags'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         ], heading="Event information"),
@@ -88,7 +90,7 @@ class EventPage(PageLDMixin, MetadataPageMixin, Page):
         return "{}\n{}".format(self.title, self.intro)
 
     def __str__(self):
-        return "{}, {}".format(self.date.year, self.title)
+        return "{}, {}".format(self.start_date.year, self.title)
 
     def ld_entity(self):
         site = self.get_site()
