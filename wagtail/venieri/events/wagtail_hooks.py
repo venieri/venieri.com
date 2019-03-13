@@ -7,17 +7,16 @@ from .models import EventPage
 
 
 class EventAdmin(ModelAdmin):
-    date_hierarchy = 'date'
     model = EventPage
     menu_label = 'Event'  # ditch this to use verbose_name_plural from model
     menu_icon = 'pilcrow'  # change as required
     menu_order = 400  # will put in 3rd place (000 being 1st, 100 2nd)
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
-    list_display = ('date', 'title', 'venue', 'categories', 'get_image')
-    list_filter = ('date', 'categories', 'tags', 'date',)
+    list_display = ('start_date', 'title', 'venue', 'categories', 'get_image')
+    list_filter = ('start_date', 'categories', 'tags', 'date',)
     search_fields = ('title', 'venue', 'body')
-    ordering = ['-date']
+    ordering = ['-start_date']
 
     def get_image(self, obj):
         _image = obj.main_image()

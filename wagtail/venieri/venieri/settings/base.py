@@ -260,7 +260,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AUTO_CREATE_KEYS=os.environ.get('AUTO_CREATE_KEYS', False)
 
 
-DATABASES = {
+DATABASESX = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'venieri',

@@ -33,7 +33,7 @@ class EventIndexPage(MetadataPageMixin, Page):
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
-        eventpages = self.get_children().live().order_by('-eventpage__date')
+        eventpages = self.get_children().live().order_by('-eventpage__start_date')
         context['eventpages'] = eventpages
         return context
 
