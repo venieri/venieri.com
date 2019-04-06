@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load archive_tags %}
+
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block nav_home %}<li class="uk-active"><a href="#">Lydia Venieri</a></li>{% endblock %}
+
+
+{% block content %}
+    {%for event in events %}
+        <style>
+           {{event.css|safe}}
+       </style>
+
+            <article class="uk-article {{event.slug}} uk-padding">
+                <div  uk-grid>
+                    <div class="uk-text-center uk-width-expand">
+                <h2 class="uk-h3 "><a class="uk-link-reset" href="{{event.get_absolute_url}}">{{event.title}}</a></h2>
+
+                {% if event.media.first %}
+
+
+                    {% with media=event.media.first %}
+
+                    {% if media.image %}
+                    <div class="uk-text-center">
+                    <img   src="{{media.image.url}}" alt="Lydia Venieri, {{event.title}}" uk-img>
+                         <p>{{event.date}}</p>
+                         {% if event.leader %}
+        <p >
+             {% render event.leader %}<br/>
+            <a  href="{{event.get_absolute_url}}">read more</a>
+        </p>
+                {% endif %}
+                    </div>
+                    {% else %}
+
+                    <div class="uk-cover-container uk-height-large">
+                        {% video media.video_url as event_video %}
+                        <iframe src="{{event_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true" uk-cover></iframe>
+
+                        {% endvideo %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                  {% endif %}
+                <p class="uk-article-meta"></p>
+
+
+                    </div>
+                </div>
+            </article>
+    {% endfor %}
+
+{% if is_paginated %}
+    <ul class="uk-pagination uk-flex-center" uk-margin>
+        {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+        {% else %}
+            <li><a class="uk-disabled"><span uk-pagination-previous></span></a></li>
+        {% endif %}
+       <!-- {% for i in paginator.page_range %}
+            {% if page_obj.number == i %} -->
+                <li class="uk-active"><span>{{ i }} / {{paginator.num_pages}}</span></li>
+        <!-- {% else %}
+                <li><a href="?page={{i}}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %} -->
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+        {% else %}
+            <li><a class="uk-disabled"><span uk-pagination-next></span></a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load archive_tags %}
+
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block content %}
+  {% with media=art.media.first %}
+    {% if media.is_horizontal %}
+        <div  uk-lightbox>
+            {% if art.project %}
+                <h1 class="uk-margin-remove uk-h3">
+                    <a class="uk-link-reset" href="{% url 'project' art.project.slug %}">{{ art.project }}</a>
+                </h1>
+            {% endif %}
+            <h2 class="uk-margin-remove uk-h4">{{ art.title }}</h2>
+            <div class="uk-margin">
+                 {% if media.image %}
+                <a href="{{media.image.crop.2000x1000 }}">
+                    <img src="{{media.image.url}}"  alt="Lydia Venieri, {{art.title}}" uk-img>
+                </a>
+                {% else %}
+                    <a href="{{media.video_url }}">
+                    {% video media.video_url as art_video %}
+                        <iframe src="{{art_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true" uk-cover></iframe>
+                    {% endvideo %}
+                    </a>
+
+                {% endif %}
+            </div>
+
+          <p>{{art.description}}</p>
+        </div>
+    {% else %}
+        <div  class="uk-child-width-1-1@s uk-child-width-1-2@m" uk-grid>
+            <div>
+                <div class="uk-margin">
+                    <a href="{{ media.image.url }}">
+                        <img class="uk-height-max-large" src="{{media.image.url}}"  alt="Lydia Venieri, {{art.title}}" uk-img>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <p class="uk-text-lead">{{art.title}}</p>
+                <p>{{art.description}}</p>
+            </div>
+        </div>
+    {% endif %}
+   {% endwith %}
+{% endblock %}

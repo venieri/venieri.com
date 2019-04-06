@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load archive_tags %}
+
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block nav_projects %}<li class="uk-active"><a href="#">Projects</a></li>{% endblock %}
+
+
+{% block content %}
+<h2>Projects</h2>
+<div class="uk-child-width-1-4@m uk-child-width-1-5@l" uk-grid="masonry: true">
+
+    {% for project in projects %}
+    <div>
+        <div class="uk-card uk-card-default">
+            <div class="uk-panel  uk-text-center">
+                <a class="uk-link-reset" href="{% url 'project' project.slug %}">
+                    {% if project.media_sample %}
+                    {% with media=project.media_sample %}
+                    {% if media.video_url %}
+                    {% video media.video_url as art_video %}
+                    <iframe src="{{art_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
+                            width="560" height="315" frameborder="0" allowfullscreen uk-responsive
+                            uk-video="automute: true" uk-video></iframe>
+                    {% endvideo %}
+                    {% else %}
+                    <img class="" src="{{media.image.url}}" alt="Lydia Venieri, {{art.title}}" uk-img>
+                    {% endif %}
+
+                    {% endwith %}
+                    {% endif %}
+                </a>
+
+
+                <a class="uk-link-reset" href="{% url 'project' project.slug %}">
+                    <h2 class="uk-h4 uk-text-center"> {{ project.title }}</h2>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% endfor %}
+    {% endblock %}
