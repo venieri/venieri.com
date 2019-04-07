@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
 
     'django.contrib.messages',
-     'whitenoise.runserver_nostatic',
-     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'django.contrib.sites',
 ] + [
     'sortedm2m',
@@ -50,9 +51,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'codemirror2',
     'whitenoise',
-    # 'bakery',
+    'bakery',
     # 'django_medusa',
-    'django_distill',
+    # 'django_distill',
     'meta',
     'django_json_ld',
     ] + [
@@ -188,12 +189,13 @@ SITE_ID=1
 VIRTUAL_WORLD='http://venieri.com/venieri/Virtual_World.html'
 
 
-BUILD_DIR = os.path.join(BASE_DIR, '..', 'website')
-BAKERY_VIEWS = ('archive.views.EventDetailView', 'archive.views.EventListView',
-                'archive.views.BioView', 'archive.views.VirtualWorldView',
-                'archive.views.ProjectListView', 'archive.views.ProjectDetailView',
-                'archive.views.ArtListView', 'archive.views.ArtDetailView')
+BUILD_DIR = os.path.join(BASE_DIR, '..', 'www')
 
+BAKERY_VIEWS = ( 'archive.views.EventPagedView',  'archive.views.EventDetailView',
+                  'archive.views.BioView', 'archive.views.VirtualWorldView',
+                  'archive.views.ProjectListView', 'archive.views.ProjectDetailView',
+                  'archive.views.ArtListView', 'archive.views.ArtDetailView',
+                  )
 
 #
 # Medusa
@@ -207,4 +209,7 @@ MEDUSA_COLLECT_STATIC_IGNORE = ['admin', 'less']
 
 #JSON_LD_EMPTY_INPUT_RENDERING='generate_thing'
 
-DISTILL_DIR=os.path.abspath(os.path.join(BASE_DIR,'www'))
+DISTILL_DIR=os.path.abspath(os.path.join(BASE_DIR,'static-site'))
+FREEZE_ROOT = '/...'
+
+STATIC_SITE = True if os.environ.get('STATIC_SITE') else False

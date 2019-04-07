@@ -147,8 +147,8 @@ class BioPage(MetadataPageMixin, Page):
     def get_context(self, request):
         # Update template context
         context = super().get_context(request)
-        context['solo_shows'] = EventPage.objects.filter(tags__name='solo show').order_by('-date')
-        context['group_shows'] = EventPage.objects.filter(tags__name='group show').order_by('-date')
+        context['solo_shows'] = EventPage.objects.filter(tags__name='solo show').order_by('-start_date')
+        context['group_shows'] = EventPage.objects.filter(tags__name='group show').order_by('-start_date')
         return context
 
     def __getattr__(self, name):

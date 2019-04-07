@@ -82,8 +82,8 @@ Beaux Arts<p>
         {% endif %}
 
 <li>
-{% ifchanged event.date.year %}
-<b>{{event.date|date:"Y" }}</b>
+{% ifchanged event.start_date.year %}
+<b>{{event.start_date|date:"Y" }}</b>
 {% endifchanged %}
 <i>{{event.title|title}}</i>{% if event.venue %}, {{event.venue|title}}, {{event.location|title}} {% endif %}</li>
 {% endfor %}

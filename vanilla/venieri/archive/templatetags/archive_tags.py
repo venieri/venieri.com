@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from django.template import Template
 from django import template
 from django.utils.html import conditional_escape
@@ -75,7 +77,16 @@ def render_media(*args, **kwargs):
         context['show_caption'] =  kwargs.pop('show_caption')
     context['media'] = models.Media.objects.get(**kwargs)
     if not args:
-        context['media_image_url'] = context['media'].image.url
+        context['media_image_url'] = context['media'].image.thumbnail["900x900"]
     else:
-        context['media_image_url'] = context['media'].image.thumbnail[args[0]].url
+        context['media_image_url'] = context['media'].image.thumbnail[args[0]]
     return context
+
+
+@register.inclusion_tag('css_framework.html')
+def include_css_framework(*args, **kwargs):
+    return {'STATIC_SITE': settings.STATIC_SITE}
+
+@register.inclusion_tag('analytics.html')
+def include_analytics(*args, **kwargs):
+    return {'STATIC_SITE': settings.STATIC_SITE}

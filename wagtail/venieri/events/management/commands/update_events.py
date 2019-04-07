@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            lydia = Page.objects.get(id=4)
+            lydia = Page.objects.get(slug='lydia-venieri')
 
             for line in solo_shows.split('\n'):
                 parts = line.split('|')

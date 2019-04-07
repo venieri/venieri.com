@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.views.generic import DetailView, ListView, TemplateView
 from meta.views import MetadataMixin
-#from bakery.views import BuildableDetailView, BuildableListView, BuildableTemplateView
-
+from bakery.views import BuildableDetailView, BuildableListView, BuildableTemplateView
+from django.core.paginator import Paginator
 
 from . import models
 
@@ -14,29 +15,55 @@ class SEO(object):
         return context
 
 
-class EventDetailView(SEO, DetailView):
+class EventDetailView(SEO, BuildableDetailView):
     model = models.Event
     context_object_name = 'event'
     template_name = 'event_detail.html'
 
 
-class EventListView(MetadataMixin, ListView):
+class EventPagedView(BuildableListView):
     title = 'Lydia Venieri'
     description = 'The website of the greek artist, Lydia Venieri'
     image = 'http://venieri.com/venieri/Lydia_Venieri/Lydia_Venieri_files/shapeimage_1.png'
     url = '/'
     template_name = 'event_list.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'events'  # Default: object_list
-    paginate_by = 6
-    queryset = models.Event.get_visible()  # De
+    _paginate_by = 6
+    paginate_by = None if settings.STATIC_SITE else _paginate_by
+    # build_path='/'
+    queryset = models.Event.objects.filter(is_visible=True)
+    page = None
 
     def get_context_data(self, **kwargs):
-        context = super(EventListView, self).get_context_data(**kwargs)
-        print('context', context)
+        context = super().get_context_data(**kwargs)
+        if settings.STATIC_SITE:
+            page = self.page if self.page else kwargs.get('page',1)
+            context['is_paginated'] = True
+            context['paginator'] = Paginator(self.queryset, self._paginate_by)
+            context['page_obj'] = context['paginator'].get_page(page)
+            context['events'] = context['page_obj']
+            print(context)
         return context
 
+    # def get_build_path(self):
+    #     context = self.get_context_data()
+    #     path = super().get_build_path()
+    #     if context['page_obj'].number == 2:
+    #         return path
+    #     else:
+    #         return path+'events/{}'.format(context['page_obj'].number)
 
-class BioView(MetadataMixin, TemplateView):
+    def build_queryset(self):
+        print("Building %s" % self.build_path)
+        super().build_queryset()
+        p = Paginator(self.queryset, self._paginate_by)
+        for page in range(2, p.num_pages+1):
+            self.page = page
+            self.build_path = 'events/%d/index.html' % page
+            super().build_queryset()
+
+
+class BioView(MetadataMixin, BuildableTemplateView):
     title = 'Lydia Venieri\'s Bio'
     description = 'Lydia Venieri Bio page'
     image = 'http://venieri.com/venieri/Bio_files/droppedImage_5.jpg'
@@ -53,7 +80,7 @@ class BioView(MetadataMixin, TemplateView):
         context['theatres'] = models.Art.objects.filter(tags__name='theatre')
         return context
 
-class VirtualWorldView(MetadataMixin, TemplateView):
+class VirtualWorldView(MetadataMixin, BuildableTemplateView):
     title = 'Lydia Venieri\'s Virtual World'
     description = 'The virtual world of Lydia Venieri'
     image = 'http://venieri.com/Virtual_World/images/ilydia.gif'
@@ -62,12 +89,12 @@ class VirtualWorldView(MetadataMixin, TemplateView):
     build_path = 'virtual-world/index.html'
 
 
-class ProjectListView(MetadataMixin, ListView):
+class ProjectListView(MetadataMixin, BuildableListView):
     title = 'Lydia Venieri\'s Projects'
     description = 'Lydia Venieri Project page'
     image = 'http://venieri.com/venieri/Bio_files/droppedImage_5.jpg'
     url = '/projects'
-
+    build_path = 'projects/index.html'
     context_object_name = 'project'
     template_name = 'project_list.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'projects'  # Default: object_list
@@ -75,7 +102,7 @@ class ProjectListView(MetadataMixin, ListView):
     queryset = models.Project.objects.filter(is_visible=True)  # De
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(BuildableDetailView):
     template_name = 'project_detail.html'
     model = models.Project
 
@@ -85,13 +112,14 @@ class ProjectDetailView(DetailView):
         return context
 
 
-class ArtListView(MetadataMixin, ListView):
+class ArtListView(MetadataMixin, BuildableListView):
     title = 'Lydia Venieri\'s work'
     description = 'Lydia Venieri art'
     image = 'http://venieri.com/venieri/Bio_files/droppedImage_5.jpg'
     url = '/work'
     context_object_name = 'art'
     template_name = 'art_list.html'
+    build_path = 'work/index.html'
     queryset = models.Art.objects.filter(is_visible=True)  # De
 
     def get_context_data(self, **kwargs):
@@ -104,7 +132,7 @@ class ArtListView(MetadataMixin, ListView):
             return context
 
 
-class ArtDetailView(DetailView):
+class ArtDetailView(BuildableDetailView):
     template_name = 'art_detail.html'
     model = models.Art
 

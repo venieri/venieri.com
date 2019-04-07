@@ -17,6 +17,7 @@ class ArtAdmin(ModelAdmin):
     ordering = ['-date']
 
     def get_image(self, obj):
+        return ''
         _image = obj.get_image()
         if _image:
             return format_html('<img src="{}" />'.format(_image.get_rendition('fill-75x75-c100').url))

@@ -1,0 +1,18 @@
+{% load static %}
+
+{% if STATIC_SITE %}
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+
+{% else %}
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="{% static "uikit/css/uikit.min.css" %}" />
+
+<!-- UIkit JS -->
+<script src="{% static "uikit/js/uikit.min.js" %}"></script>
+<script src="{% static "uikit/js/uikit-icons.min.js" %}"></script>
+{% endif %}

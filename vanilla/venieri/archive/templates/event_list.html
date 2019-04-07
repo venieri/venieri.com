@@ -6,7 +6,7 @@
 {% block about_lydia %}{% endblock %}
 {% block banner %}{% endblock %}
 
-{% block nav_home %}<li class="uk-active"><a href="#">Lydia Venieri</a></li>{% endblock %}
+{% block nav_home %}<li class="uk-active"><a href="/">Lydia Venieri</a></li>{% endblock %}
 
 
 {% block content %}
@@ -27,7 +27,7 @@
 
                     {% if media.image %}
                     <div class="uk-text-center">
-                    <img   src="{{media.image.url}}" alt="Lydia Venieri, {{event.title}}" uk-img>
+                    <img   src="{{media.image.thumbnail.900x900}}" alt="Lydia Venieri, {{event.title}}" uk-img>
                          <p>{{event.date}}</p>
                          {% if event.leader %}
         <p >
@@ -59,7 +59,11 @@
 {% if is_paginated %}
     <ul class="uk-pagination uk-flex-center" uk-margin>
         {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+            {% if page_obj.number > 2 %}
+                <li><a href="/events/{{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+            {% else %}
+                 <li><a href="/"><span uk-pagination-previous></span></a></li>
+            {% endif %}
         {% else %}
             <li><a class="uk-disabled"><span uk-pagination-previous></span></a></li>
         {% endif %}
@@ -71,7 +75,7 @@
             {% endif %}
         {% endfor %} -->
         {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+            <li><a href="/events/{{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
         {% else %}
             <li><a class="uk-disabled"><span uk-pagination-next></span></a></li>
         {% endif %}

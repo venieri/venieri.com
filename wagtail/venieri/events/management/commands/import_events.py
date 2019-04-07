@@ -1,8 +1,7 @@
 import datetime
 
 from django.core.management.base import BaseCommand, CommandError
-from events.models import EventPage
-from wagtail.core.models import Page
+from .... import models
 
 group_shows = """2017|  Summer Sex I - On the Spur of the Moment|Lichtundfire|New York
 2017|On Paper|Paris Koh Fine Arts|New York
@@ -102,6 +101,37 @@ group_shows = """2017|  Summer Sex I - On the Spur of the Moment|Lichtundfire|Ne
 1983|Exposition a l’Ateilier de Yankel|Galeire Bernanos|Paris"""
 
 
+solo_shows = """2008| See No Evil |   Terra Gallery Tokyo |   Japan 
+2007| War Games |   Stux Gallery |   New York
+2007| War Games |   Gallery Lola Nikalaou |   Thessaloniki
+2006| Forever After |   Gallery 3 |   Athens
+2006| For Ever After |   Luxe |   New York
+2005| For Ever After |   Gallery Quang |   Paris
+2004| Hibernation – Summer Olympics |   Vernikos Foundation |   Kastella, Athens
+2004| Sleeping Beauty Conscience |   Mid-Manhattan Library |   New York
+2004| Hibernation |   Luxe Gallery |   New York
+2002| Hibernation |   Gallerie Three |   Athens
+2002| Hibernation |   Gallerie Samy Kinge |   Paris
+2001| Summer Celebration |   Sundaram Tagore Gallery |   New York
+2001| Beyond Being |   Space Untitled |   New York
+2000| Beyond Being |   Gallery Three |   Athens
+2000| Axiome Lambda |   Gallery Samy Kinge |   Paris
+2000| Beyond Being |   Gallery Lola Nikolaou |   Thessaloniki, Greece
+1999| Who is Nostalgic |   Gallery Vourkariani |   Kia, Greece
+1997| Two Strangers on the Moon |   Galerie Selini |   Athens
+1997| Cool Memories |   Galerie lola Nikolaou |  Thessalonique, Greece
+1995| Anima Mundis |   Art Space X |   Athens
+1995| Manifeste Tellurique III |   Gallerie Samy Kinge |   Paris
+1994| Manifeste Tellurique II |   Galerie lola Nikolaou |   Thessalonique, Greece
+1994| Manifeste Tellurique I |   Gallerie d’Athens |   Athens
+1993| Anima Mundis |   Banque Franco-Hellenique |   Larissa
+1990| Les Sistres du Temps | Galerie Asbaek Pilon |   Copenhagan
+1990| Les Sistres du Temps |   Ancien Musee Archeologique | Thessalonique
+1988| FIAC |   Galerie Samy Kinge |   Grande Palais, Paris
+1988| Les Figures De Lydia |   Galerie Medoussa |   Athenes
+1986| Exposition personnelle |   Galerie Samy Kinge |   Paris"""
+
+
 class Command(BaseCommand):
     help = 'Imports events'
 
@@ -110,9 +140,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            lydia = Page.objects.get(id=4)
+            lydia = EventIndexPage.objects.get(slug='lydia-venieri')
 
-            for line in group_shows.split('\n'):
+            for line in solo_shows.split('\n'):
                 parts = line.split('|')
                 if len(parts) == 5:
                     year, title, venue, location, info = parts
@@ -120,7 +150,7 @@ class Command(BaseCommand):
                     year, title, venue, location = parts
                     info = ''
                 new_page = EventPage(title=title.strip(),
-                                     date= datetime.datetime.now().replace(year=int(year)),
+                                     start_date= datetime.datetime.now().replace(year=int(year)),
 
                                      venue=venue.strip(),
                                      location=location.strip(),
