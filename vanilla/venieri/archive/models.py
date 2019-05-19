@@ -352,11 +352,14 @@ class Reference(Entity):
         sd_data =  {
             "@context": "http://schema.org/",
             "@type": "Article",
-            "url": self.get_absolute_url(),
-            "name": self.title,
+            "url": self.url,
+            "name": self.publication,
+            "headline": self.title,
             "description": self.description,
-            "location": self.venue,
+            "author": ', '.join(self.authors),
+            "datePublished": self.publication_date.strftime("%Y-%m-%d"),
         }
+
         clean_sd = {}
         for k,v in sd_data.items():
             if  v:
