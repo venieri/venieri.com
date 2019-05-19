@@ -25,7 +25,7 @@ SECRET_KEY = 'h9$k1%4)6c^65!3@ds*cyo4icj!1#bxq&ukajp=s@phga@as2@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1' ,'testserver']
 
 APPEND_SLASH=True #False
 
@@ -191,11 +191,18 @@ VIRTUAL_WORLD='http://venieri.com/venieri/Virtual_World.html'
 
 BUILD_DIR = os.path.join(BASE_DIR, '..', 'www')
 
-BAKERY_VIEWS = ( 'archive.views.EventPagedView',  'archive.views.EventDetailView',
-                  'archive.views.BioView', 'archive.views.VirtualWorldView',
-                  'archive.views.ProjectListView', 'archive.views.ProjectDetailView',
-                  'archive.views.ArtListView', 'archive.views.ArtDetailView',
-                  )
+BAKERY_VIEWS = (
+                    'archive.views.EventPagedView',
+                    'archive.views.EventDetailView',
+                    'archive.views.BioView',
+                    'archive.views.VirtualWorldView',
+                    'archive.views.ProjectListView',
+                    'archive.views.ProjectDetailView',
+                    'archive.views.ArtListView',
+                    'archive.views.ArtDetailView',
+                    'archive.sitemaps.BuildableSitemapView',
+                )
+
 
 #
 # Medusa

@@ -15,13 +15,13 @@ class SEO(object):
         return context
 
 
-class EventDetailView(SEO, BuildableDetailView):
+class EventDetailView(MetadataMixin, BuildableDetailView):
     model = models.Event
     context_object_name = 'event'
     template_name = 'event_detail.html'
 
 
-class EventPagedView(BuildableListView):
+class EventPagedView(MetadataMixin, BuildableListView):
     title = 'Lydia Venieri'
     description = 'The website of the greek artist, Lydia Venieri'
     image = 'http://venieri.com/venieri/Lydia_Venieri/Lydia_Venieri_files/shapeimage_1.png'
@@ -76,7 +76,7 @@ class BioView(MetadataMixin, BuildableTemplateView):
         context['solo_shows'] = models.Event.objects.filter(tags__name='show/solo')
         context['group_shows'] = models.Event.objects.filter(tags__name='show/group')
         context['iphone_art'] = models.Art.objects.filter(tags__name='art/iphone')
-        context['internet_art'] = models.Art.objects.filter(tags__name='art/internet')
+        context['internet_art'] = models.Art.objects.filter(tags__name='internet')
         context['theatres'] = models.Art.objects.filter(tags__name='theatre')
         return context
 
@@ -102,7 +102,7 @@ class ProjectListView(MetadataMixin, BuildableListView):
     queryset = models.Project.objects.filter(is_visible=True)  # De
 
 
-class ProjectDetailView(BuildableDetailView):
+class ProjectDetailView(MetadataMixin, BuildableDetailView):
     template_name = 'project_detail.html'
     model = models.Project
 
@@ -132,7 +132,7 @@ class ArtListView(MetadataMixin, BuildableListView):
             return context
 
 
-class ArtDetailView(BuildableDetailView):
+class ArtDetailView(MetadataMixin, BuildableDetailView):
     template_name = 'art_detail.html'
     model = models.Art
 

@@ -66,7 +66,7 @@ Beaux Arts<p>
 <h2 class="uk-h4">Group Shows</h2>
 
 {%for event in group_shows %}
-{% render_json_ld event.sd %}
+        {% render_json_ld event.sd %}
             {% ifchanged event.start_date.year %}
 
             {% if event.start_date.year == 2011 %}
@@ -125,6 +125,7 @@ Beyond Being, Lydia Venieri, 2000<br />
 <h2 class="uk-h4">Internet Art</h2>
 
 {%for art in internet_art %}
+          {% render_json_ld art.sd %}
     {% render_json_ld art.sd %}
     <a href="{{art.description}}">{{ art.title }}, {{art.year}}</a><br />
 {%endfor%}
@@ -134,6 +135,7 @@ Beyond Being, Lydia Venieri, 2000<br />
 
 <h2 class="uk-h4">Theatre</h2>
 {%for theatre in theatres %}
+      {% render_json_ld theatre.sd %}
     {{ theatre.description}}, {{theatre.year}}<br />
 {% endfor %}
 

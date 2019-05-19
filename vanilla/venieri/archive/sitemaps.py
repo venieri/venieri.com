@@ -1,8 +1,11 @@
+import os
 from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps import GenericSitemap
 from django.utils.timezone import now
 from django.core.paginator import Paginator
+from django.test.client import Client
+from bakery.views import BuildableMixin
 
 from . import models
 
@@ -10,8 +13,24 @@ from . import models
 from django.urls import reverse
 
 
+class BuildableSitemapView(BuildableMixin):
+
+    @property
+    def build_method(self):
+        return self.build
+
+    def build(self):
+        build_path = 'sitemap.xml'
+        resp = Client().get('/'+build_path)
+        path = os.path.join(settings.BUILD_DIR, build_path)
+        self.prep_directory(build_path)
+        self.build_file(path, resp.content)
+
+
 class BaseSitemap(Sitemap):
     protocol = 'https' if settings.STATIC_SITE else 'http'
+
+
 
 class StaticViewSitemap(BaseSitemap):
     priority = 0.5
@@ -41,7 +60,6 @@ class EventSitemap(BaseSitemap):
 
     def items(self):
         qs =  models.Event.objects.filter(is_visible=True)
-        print(qs.count())
         return qs
 
     def lastmod(self, obj):

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load embed_video_tags %}
 {% load archive_tags %}
-
+{% load render_json_ld from json_ld %}
 {% block about_lydia %}{% endblock %}
 {% block banner %}{% endblock %}
 
@@ -14,6 +14,7 @@
 <div class="uk-child-width-1-4@m uk-child-width-1-5@l" uk-grid="masonry: true">
 
     {% for project in projects %}
+           {% render_json_ld project.sd %}
     <div>
         <div class="uk-card uk-card-default">
             <div class="uk-panel  uk-text-center">

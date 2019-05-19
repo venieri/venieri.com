@@ -51,7 +51,7 @@ class Media(models.Model):
     video_url = EmbedVideoField(blank=True, null=True)
 
     def __str__(self):
-        return self.caption
+        return "[%s} %s" % (self.pk, self.caption)
 
 
     def is_horizontal(self):
@@ -204,8 +204,14 @@ class Project(ModelMeta, models.Model):
         'image': 'media_url',
     }
 
-    def sd_type(self):
-        pass
+    @property
+    def sd(self):
+        return {
+            "@type": 'Thesis',
+            "description": self.statement,
+            "name": self.title,
+            'image': self.media_sample().url() if self.media_sample() else None
+        }
 
 
 class Art(Entity):
@@ -332,7 +338,7 @@ class Reference(Entity):
 
     publication_date = models.DateField(blank=True, null=True)
     publication = models.CharField(max_length=200, blank=True, default='')
-    author = models.CharField(max_length=200, blank=True, default='')
+    authors = models.CharField(max_length=200, blank=True, default='')
     url = models.URLField(max_length=200, blank=True, default='')
 
     def get_absolute_url(self):

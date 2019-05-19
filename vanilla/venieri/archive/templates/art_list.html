@@ -45,7 +45,7 @@
             <li class="{{work.tags.get_tag_list|join:" "}}" data-size="{{art.date}}">
 
              <!--<div class="uk-card uk-card-default"  >-->
-                <div class="uk-panel">
+                <div class="uk-panel" uk-tooltip="{{ work.title }}" >
 
                     {% with media=work.media_sample %}
                     {% if media.video_url %}

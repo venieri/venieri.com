@@ -2,11 +2,12 @@
 {% load staticfiles %}
 {% load embed_video_tags %}
 {% load archive_tags %}
-
+{% load render_json_ld from json_ld %}
 {% block about_lydia %}{% endblock %}
 {% block banner %}{% endblock %}
 
 {% block content %}
+    {% render_json_ld project.sd %}
 <article class="uk-article ">
 
     <h1 class="uk-margin-remove uk-h3"><a class="uk-link-reset" href="">{{ project.title }}</a></h1>
@@ -17,16 +18,10 @@
          uk-lightbox="animation: slide">
 
         {% for art in project.visible_art %}
+
         <div class="">
-            {% with media=art.media.first %}
-                {% if media.video_url %}
-                        {% video media.video_url as art_video %}
-                          <a class="uk-inline" href="{{media.video_url}}"></a>
-                        {% endvideo %}
-                {% else %}
-                    <img src="{{media.image.url}}" alt="Lydia Venieri, {{art.title}}" uk-img>
-                {% endif %}
-            {% endwith %}
+            {% render_art art=art %}
+
         </div>
         {% endfor %}
     </div>

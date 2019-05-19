@@ -13,8 +13,20 @@
         <title>{% block title %}Lydia Venieri {% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
          {% include_css_framework %}
+
+        <style type="text/css">
+  .nostyle {
+          margin: 0;
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
+          background: transparent;
+        }
+   </style>
 
     </head>
     <body>
@@ -40,7 +52,7 @@
 
          {% endblock %}
 
-<div class="uk-section uk-padding-small ">
+<div class="uk-section uk-padding-remove ">
     <div class="uk-container  uk-container-small">
          {% block content %}{% endblock %}
     </div>

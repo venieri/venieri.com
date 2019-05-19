@@ -25,6 +25,8 @@ class ArtAdmin(admin.ModelAdmin):
     #     ProtfolioInline,
     # ]
     #exclude = ('media',)
+    list_filter = ('project', 'is_visible', 'tags')
+
     list_editable = ['title', 'sd_type','year',  'is_visible',]
     fields = ['sd_type', 'title', 'project', 'year', 'tags', 'description',  'media', 'image_tag']
     readonly_fields = ['image_tag']
@@ -65,5 +67,14 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = [
         ArtInline
     ]
+    list_display = ['title', 'slug', 'is_visible' ]
+    list_editable = ['is_visible', ]
 
 admin.register(models.Event.tags.tag_model)
+
+@admin.register(models.Reference)
+class ReferenceAdmin(admin.ModelAdmin):
+    list_display = ['publication_date','title', 'publication', 'authors', 'is_visible', 'url',]
+    list_editable = ['is_visible', ]
+
+

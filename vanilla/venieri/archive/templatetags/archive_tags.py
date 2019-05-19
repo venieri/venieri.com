@@ -76,11 +76,22 @@ def render_media(*args, **kwargs):
     if 'show_caption' in  kwargs:
         context['show_caption'] =  kwargs.pop('show_caption')
     context['media'] = models.Media.objects.get(**kwargs)
-    if not args:
-        context['media_image_url'] = context['media'].image.thumbnail["900x900"]
-    else:
-        context['media_image_url'] = context['media'].image.thumbnail[args[0]]
+    if context['media'].image:
+        if not args:
+            context['media_image_url'] = context['media'].image.thumbnail["900x900"]
+        else:
+            context['media_image_url'] = context['media'].image.thumbnail[args[0]]
     return context
+
+@register.inclusion_tag('art_responsive.html')
+def render_art(*args, **kwargs):
+    context = {}
+    if 'art' in kwargs:
+        context['art'] = kwargs.pop('art')
+    else:
+        context['art'] = models.Art.objects.get(**kwargs)
+    return context
+
 
 
 @register.inclusion_tag('css_framework.html')
