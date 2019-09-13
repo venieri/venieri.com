@@ -51,7 +51,7 @@ Beaux Arts<p>
                 <b>{{event.start_date|date:"Y" }}</b>
             {% endifchanged %}
 <i><a class="uk-link-text" href="{{event.get_absolute_url}}">{{event.title|title}}</a></i>{% if event.venue %},
-                {{event.venue|title}}, {{event.location|title}}
+                {{event.venue|title}} <!--  {{event.location|title}} -->
                 {% endif %}
         <br/>
         {% endfor %}
@@ -87,7 +87,7 @@ Beaux Arts<p>
             {% endifchanged %}
             <i>{{event.title|title}}</i>
                 {% if event.venue %}
-                    , {{event.venue|title}}, {{event.venue|title}}
+                    , {{event.venue|title}} <!-- , {{event.location|title}} -->
             {% endif %}
         <br />
 {% endfor %}
