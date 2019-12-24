@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'codemirror2',
     'whitenoise',
     'bakery',
-    # 'django_medusa',
-    # 'django_distill',
+    'simple_history',
     'meta',
     'django_json_ld',
     ] + [
@@ -70,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'venieri.urls'
@@ -220,3 +220,5 @@ DISTILL_DIR=os.path.abspath(os.path.join(BASE_DIR,'static-site'))
 FREEZE_ROOT = '/...'
 
 STATIC_SITE = True if os.environ.get('STATIC_SITE') else False
+FACEBOOK_APP_ID=str('789564344433302')
+FACEBOOK_APP_SECRET   = os.getenv('FACEBOOK_SECRET')

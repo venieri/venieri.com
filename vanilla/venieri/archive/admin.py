@@ -1,7 +1,7 @@
 from codemirror2.widgets import CodeMirrorEditor
 from django.contrib import admin
 from embed_video.admin import AdminVideoMixin
-
+from simple_history.admin import SimpleHistoryAdmin
 from . import models
 
 from  tagulous import admin as tagulous_admin
@@ -34,7 +34,7 @@ class ArtAdmin(admin.ModelAdmin):
 tagulous_admin.register(models.Art, ArtAdmin)
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(SimpleHistoryAdmin):
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.attname == "description":
             kwargs['widget'] = CodeMirrorEditor(options={'mode': 'htmlmixed', 'lineNumbers': True},
@@ -63,7 +63,7 @@ class ArtInline(admin.TabularInline):
 
 
 @admin.register(models.Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(SimpleHistoryAdmin):
     inlines = [
         ArtInline
     ]

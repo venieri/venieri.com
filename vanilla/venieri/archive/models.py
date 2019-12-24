@@ -16,7 +16,7 @@ from meta.models import ModelMeta
 # from textblob import TextBlob
 from sortedm2m.fields import SortedManyToManyField
 from versatileimagefield.fields import VersatileImageField
-
+from simple_history.models import HistoricalRecords
 
 def get_full_path(absolute_url):
    domain = Site.objects.get_current().domain
@@ -49,6 +49,7 @@ class Media(models.Model):
     slug = AutoSlugField(populate_from='caption')
     image = VersatileImageField(upload_to=media_path, blank=True, null=True)
     video_url = EmbedVideoField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return "[%s} %s" % (self.pk, self.caption)
@@ -99,6 +100,7 @@ class Entity(ModelMeta, models.Model):
     description = models.TextField(blank=True, default='')
     slug = AutoSlugField(populate_from='get_slug')
     media = SortedManyToManyField(Media, related_name='entities', blank=True)
+
 
 
     tags = tagulous.models.TagField(
@@ -170,6 +172,7 @@ class Project(ModelMeta, models.Model):
     title = models.CharField(max_length=200)
     statement = models.TextField(blank=True, default='')
     slug = AutoSlugField(populate_from='get_slug')
+    history = HistoricalRecords()
 
     def get_slug(self):
         return self.title
@@ -300,6 +303,8 @@ class Event(Entity):
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     venue = models.CharField(max_length=200, blank=True, default='')
+    published = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
 
     def get_absolute_url(self):

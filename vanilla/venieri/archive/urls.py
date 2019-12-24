@@ -1,5 +1,4 @@
 from django.urls import path
-from django_distill import distill_path
 from django.contrib.sitemaps.views import sitemap
 
 from . import views
