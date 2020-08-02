@@ -85,7 +85,7 @@ class Media(models.Model):
             "description": self.caption,
             "name": self.caption,
             "caption": self.caption,
-            "image": self.url()
+            "image": 'https://venieri.com' + self.url()
         }
 
 
@@ -273,7 +273,7 @@ class Art(Entity):
         default=SD_VisualArtwork,
     )
     project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.DO_NOTHING)
-    year = models.PositiveSmallIntegerField(default=2018)
+    year = models.PositiveSmallIntegerField(default=2020)
     def get_absolute_url(self):
         return reverse('art-work', kwargs={'slug': self.slug})
 
@@ -285,14 +285,15 @@ class Art(Entity):
 
     @property
     def sd(self):
-        return {
+
+            return {
             "@context": "http://schema.org/",
             "@type": self.sd_type,
-            "url": self.get_absolute_url(),
+            "url": 'https://venieri.com' + self.get_absolute_url(),
             "name": self.title,
             "description": self.description,
             "dateCreated": self.date,
-            "image": self.media_sample().sd if self.media_sample() else None
+            "image":  self.media_sample().sd  if self.media_sample() else ''
         }
 
 

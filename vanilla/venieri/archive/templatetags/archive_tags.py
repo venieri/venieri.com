@@ -1,4 +1,4 @@
-import os
+import random, os
 from django.conf import settings
 from django.template import Template
 from django import template
@@ -8,6 +8,8 @@ from django.utils.safestring import mark_safe
 from .. import models
 
 register = template.Library()
+
+
 
 
 @register.simple_tag(takes_context=True)
@@ -20,6 +22,20 @@ def render(context, template_str):
 def art(**kwargs):
     art = models.Art.objects.get(**kwargs)
     return art
+
+
+
+
+@register.simple_tag(takes_context=True)
+def project_media(context, **kwargs):
+    project_media = []
+    for art in models.Art.objects.filter(**kwargs):
+        media = art.media.first()
+        if media:
+            project_media.append(media)
+    random.shuffle(project_media)
+    context['project_media'] = project_media
+    return ''
 
 
 @register.simple_tag
@@ -91,6 +107,9 @@ def render_art(*args, **kwargs):
     else:
         context['art'] = models.Art.objects.get(**kwargs)
     return context
+
+
+
 
 
 

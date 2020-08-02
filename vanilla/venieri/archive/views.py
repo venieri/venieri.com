@@ -78,6 +78,7 @@ class BioView(MetadataMixin, BuildableTemplateView):
         context['iphone_art'] = models.Art.objects.filter(tags__name='art/iphone')
         context['internet_art'] = models.Art.objects.filter(tags__name='internet')
         context['theatres'] = models.Art.objects.filter(tags__name='theatre')
+        context['references'] = models.Reference.objects.filter()
         return context
 
 class VirtualWorldView(MetadataMixin, BuildableTemplateView):

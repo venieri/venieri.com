@@ -20,15 +20,15 @@ class MediaAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 
 class ArtAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'year', 'tags', 'sd_type', 'is_visible', 'image_tag']
+    list_display = ['id', 'title', 'slug', 'year', 'tags', 'sd_type', 'is_visible', 'image_tag']
     # inlines = [
     #     ProtfolioInline,
     # ]
     #exclude = ('media',)
     list_filter = ('project', 'is_visible', 'tags')
 
-    list_editable = ['title', 'sd_type','year',  'is_visible',]
-    fields = ['sd_type', 'title', 'project', 'year', 'tags', 'description',  'media', 'image_tag']
+    list_editable = ['title', 'sd_type','year',   'is_visible']
+    fields = ['sd_type', 'title',  'project', 'year', 'tags', 'description',  'media', 'image_tag']
     readonly_fields = ['image_tag']
     save_as = True
 tagulous_admin.register(models.Art, ArtAdmin)
