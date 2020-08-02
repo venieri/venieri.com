@@ -17,6 +17,26 @@ from meta.models import ModelMeta
 from sortedm2m.fields import SortedManyToManyField
 from versatileimagefield.fields import VersatileImageField
 from simple_history.models import HistoricalRecords
+from io import StringIO
+from html.parser import HTMLParser
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs= True
+        self.text = StringIO()
+    def handle_data(self, d):
+        self.text.write(d)
+    def get_data(self):
+        return self.text.getvalue()
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
 
 def get_full_path(absolute_url):
    domain = Site.objects.get_current().domain
@@ -126,11 +146,13 @@ class Entity(ModelMeta, models.Model):
     def leader(self):
         if self.description:
             dom = pq(self.description)
-            leader_text = dom(".leader").html()
-            if leader_text:
-                return leader_text
-            return self.description[:200]
-        return ''
+            text = dom(".leader").html()
+        if not text:
+            text = dom().html()
+            text = text[:200]
+        text = strip_tags(text)
+        return text
+
 
     def image_tag(self):
         first = self.media.first()
@@ -323,7 +345,7 @@ class Event(Entity):
             "@type": "VisualArtsEvent",
             "url": self.get_absolute_url(),
             "name": self.title,
-            "description": self.description,
+            "description": self.leader,
             "location": self.venue,
             "eventSchedule": {
                 "@type": "Schedule",

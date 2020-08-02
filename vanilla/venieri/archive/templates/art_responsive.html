@@ -2,7 +2,7 @@
 {% load render_json_ld from json_ld %}
 {% load archive_tags %}
 {% render_json_ld art.sd %}
-    {% render_media id=art.media.first.id %}
+{% render_media id=art.media.first.id %}
     <p>{{art.title}}</p>
 
 
