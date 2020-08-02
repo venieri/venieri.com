@@ -147,11 +147,15 @@ class Entity(ModelMeta, models.Model):
         if self.description:
             dom = pq(self.description)
             text = dom(".leader").html()
-        if not text:
-            text = dom().html()
-            text = text[:200]
-        text = strip_tags(text)
-        return text
+            if not text:
+                text = self.description[:200]
+            text = strip_tags(text)
+            return text
+        return ''
+
+    @property
+    def leader_cleaned(self):
+        return strip_tags(self.leader)
 
 
     def image_tag(self):
@@ -345,7 +349,7 @@ class Event(Entity):
             "@type": "VisualArtsEvent",
             "url": self.get_absolute_url(),
             "name": self.title,
-            "description": self.leader,
+            "description": self.leader_cleaned,
             "location": self.venue,
             "eventSchedule": {
                 "@type": "Schedule",
