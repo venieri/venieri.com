@@ -1,0 +1,49 @@
+{% load embed_video_tags %}
+{% load render_json_ld from json_ld %}
+{% load archive_tags %}
+
+
+<div class="uk-slidenav" uk-switcher="animation: uk-animation-fade; connect: #{{id}}">
+    {% for media in media_list %}
+    <li  class="uk-invisible"><a href="#" uk-switcher-item="next" ></a></li>
+    {% endfor %}
+</div>
+
+    <ul id="{{id}}" class="uk-switcher uk-margin uk-position-center">
+         {% for media in media_list %}
+        <li>
+            <div class="uk-card  uk-width-3-5 uk-align-center">
+                <div class="uk-card-media-top">
+                    <a href="{{media.media_url}}">
+                        <img data-src="{{media.media_url}}" alt="{{media.caption}}" title="{{media.caption}}" uk-img>
+                    </a>
+                </div>
+                <div class="uk-card-body">
+                    {% if show_captions %}
+                    <h3 class="uk-card-title">{{media.caption}}</h3>
+                    {% endif %}
+
+                </div>
+                          <a href="#" uk-switcher-item="next" class="uk-position-center-right-out" uk-slidenav-next></a>
+                    <a href="#" uk-switcher-item="previous" class="uk-position-center-left-out" uk-slidenav-previous></a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+
+</div>
+<script type="text/javascript">
+    function nextTab() {
+    // here comes the function to click the next tab
+    var next = document.querySelector(".uk-position-center-left-out")
+    next.click()
+
+    // and here you call this function again
+    setTimeout(nextTab, 5000);
+}
+// this is to call the function for the first time
+setTimeout(nextTab, 3000);
+</script>
+        
+
