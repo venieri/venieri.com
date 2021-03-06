@@ -88,6 +88,7 @@ class Media(models.Model):
             return format_html(self.video.get_embed_code(*settings.ARCHIVE_VIDEO_THUMBNAIL))
         return
 
+    @property
     def url(self):
         if self.image:
             return self.image.url
@@ -98,6 +99,13 @@ class Media(models.Model):
     def video(self):
         return detect_backend(self.video_url) if self.video_url else None
 
+
+    @property
+    def media_url(self):
+        return self.url
+
+
+
     @property
     def sd(self):
         return {
@@ -105,7 +113,7 @@ class Media(models.Model):
             "description": self.caption,
             "name": self.caption,
             "caption": self.caption,
-            "image": 'https://venieri.com' + self.url()
+            "image": 'https://venieri.com' + self.url
         }
 
 
@@ -114,12 +122,12 @@ class Entity(ModelMeta, models.Model):
         verbose_name_plural = "entities"
         # abstract = True
 
-    category = GenericRelation(Category)
+    # category = GenericRelation(Category)
     is_visible = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, default='')
     slug = AutoSlugField(populate_from='get_slug')
-    media = SortedManyToManyField(Media, related_name='entities', blank=True)
+    media = SortedManyToManyField(Media, related_name='entities', blank=True, null=True)
 
 
 
@@ -142,6 +150,8 @@ class Entity(ModelMeta, models.Model):
     def get_absolute_url(self):
         return reverse('{}'.format(self.__class__.__name__.lower()), kwargs={'slug': self.slug})
 
+
+
     @property
     def leader(self):
         if self.description:
@@ -149,7 +159,7 @@ class Entity(ModelMeta, models.Model):
             text = dom(".leader").html()
             if not text:
                 text = self.description[:200]
-            text = strip_tags(text)
+            #text = strip_tags(text)
             return text
         return ''
 
@@ -163,14 +173,27 @@ class Entity(ModelMeta, models.Model):
         if first:
             return first.image_tag()
 
+    @property
     def media_url(self):
         first = self.media.first()
         if first:
             return first.url()
 
+    @property
+    def url(self):
+        return self.get_absolute_url()
+
+    @property
+    def caption(self):
+        return self.title
+
+    @property
     def media_sample(self):
         return self.media.first()
 
+    @property
+    def media_count(self):
+        return self.media.count()
 
     @classmethod
     def get_visible(cls):
@@ -218,6 +241,7 @@ class Project(ModelMeta, models.Model):
     def visible_art(self):
         return self.art_set.filter(is_visible=True)
 
+    @property
     def media_sample(self):
         art = self.art_set.first()
         if art:
@@ -239,7 +263,7 @@ class Project(ModelMeta, models.Model):
             "@type": 'Thesis',
             "description": self.statement,
             "name": self.title,
-            'image': self.media_sample().url() if self.media_sample() else None
+            'image': self.media_sample.url if self.media_sample else None
         }
 
 
@@ -300,6 +324,7 @@ class Art(Entity):
     )
     project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.DO_NOTHING)
     year = models.PositiveSmallIntegerField(default=2020)
+    external_url = models.URLField(max_length=300, null=None, blank=True)
     def get_absolute_url(self):
         return reverse('art-work', kwargs={'slug': self.slug})
 
@@ -319,7 +344,7 @@ class Art(Entity):
             "name": self.title,
             "description": self.description,
             "dateCreated": self.date,
-            "image":  self.media_sample().sd  if self.media_sample() else ''
+            "image":  self.media_sample.sd  if self.media_sample else ''
         }
 
 
@@ -371,7 +396,7 @@ class Reference(Entity):
     publication_date = models.DateField(blank=True, null=True)
     publication = models.CharField(max_length=200, blank=True, default='')
     authors = models.CharField(max_length=200, blank=True, default='')
-    url = models.URLField(max_length=200, blank=True, default='')
+    article_url = models.URLField(max_length=200, blank=True, default='')
 
     def get_absolute_url(self):
         return reverse('reference', kwargs={'slug': self.slug})
@@ -384,13 +409,13 @@ class Reference(Entity):
         sd_data =  {
             "@context": "http://schema.org/",
             "@type": "Article",
-            "url": self.url,
+            "url": self.article_url,
             "name": self.publication,
             "headline": self.title,
             "description": self.description,
-            "author": ', '.join(self.authors),
+            "author": self.authors, #', '.join(self.authors),
             "datePublished": self.publication_date.strftime("%Y-%m-%d"),
-        }
+         }
 
         clean_sd = {}
         for k,v in sd_data.items():
