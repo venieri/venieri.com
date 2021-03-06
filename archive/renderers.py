@@ -18,7 +18,7 @@ class BioRenderer(StaticSiteRenderer):
     def get_paths(self):
         return frozenset([
             "bio",
-            "/work/",
+            # "/work/",
             #'projects',
             #'virtual-world'
             #"/sitemap.xml",
@@ -35,7 +35,7 @@ class EventRenderer(StaticSiteRenderer):
 
 class ArtRenderer(StaticSiteRenderer):
     def get_paths(self):
-        paths = ["/art/", ]
+        paths = [] #"/art/", ]
         items = models.Art.objects.filter(is_visible=True)
         for item in items:
             paths.append(item.get_absolute_url())
@@ -43,14 +43,15 @@ class ArtRenderer(StaticSiteRenderer):
 
 class ProjectRenderer(StaticSiteRenderer):
     def get_paths(self):
-        paths = ["/art/", ]
+        paths = ["/project/", ]
         items = models.Project.objects.filter(is_visible=True)
         for item in items:
             paths.append(item.get_absolute_url())
         return paths
 
 renderers = [
-            HomeRenderer, BioRenderer,
+            # HomeRenderer,
+            BioRenderer,
             # EventRenderer
             # ,ArtRenderer, ProjectRenderer
             ]
