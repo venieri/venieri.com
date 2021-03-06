@@ -8,53 +8,67 @@
 
 {% block content %}
     {% render_json_ld art.sd %}
-  {% with media=art.media.first %}
+ {% if art.external_url %}
+  <div  >
 
-    {% if media.is_horizontal %}
-        <div  uk-lightbox>
+      <iframe src="{{art.external_url}}"   width="640" height="480" frameborder="0" ></iframe>
+</div>
+                {% else %}
+
+<article class="uk-article ">
+
+    {% if art.project %}
+<!--    <h1 class="uk-margin-remove uk-h2">-->
+<!--        <a class="uk-link-reset" href="{% url 'project' art.project.slug %}">{{ art.project }}</a>-->
+<!--    </h1>-->
+
+        {{ art.statement|safe }}
+
+    <h1 class="uk-margin-remove uk-h2 uk-text-center">{{ art.title }}</h1>
+
+    {% else %}
+        <h1 class="uk-margin-remove uk-h2 uk-text-center">{{ art.title }}</h1>
+    {% endif %}
+
+
+
+
+
+
+
+ <div class="uk-child-width-1-1 uk-text-center"
+      uk-grid="masonry: true">
+
+    {% for media in art.media.all %}
 
 
             <div class="uk-margin">
+
+
                  {% if media.image %}
-                <a href="{{media.image.crop.2000x1000 }}">
-                    <img src="{{media.image.url}}"  alt="Lydia Venieri, {{art.title}}" uk-img>
+
+
+                  <a href="{{media.image.thumbnail.2000x1000 }}">
+
+
+                    <img data-src="{{media.image.url}}"  alt="Lydia Venieri, {{art.title}}" uk-img>
                 </a>
                 {% else %}
                     <a href="{{media.video_url }}">
                     {% video media.video_url as art_video %}
-                        <iframe src="{{art_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true" uk-cover></iframe>
+                        <iframe src="{{art_video.url}}?autoplay=1&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="640" height="360" frameborder="0" allowfullscreen uk-responsive uk-video="automute: false; autoplay: inview" uk-cover></iframe>
                     {% endvideo %}
                     </a>
 
                 {% endif %}
             </div>
-               {% if art.project %}
-                <h1 class="uk-margin-remove uk-h2">
-                    <a class="uk-link-reset" href="{% url 'project' art.project.slug %}">{{ art.project }}</a>
-                </h1>
-            {% endif %}
-                <h2 class="uk-margin-remove uk-h4">{{ art.title }}</h2>
-          <p>{{art.description}}</p>
-        </div>
-    {% else %}
-        <div uk-grid>
-            <div class="uk-width-2-3@m">
-  <a href="{{ media.image.url }}">
-                    <img src="{{media.image.thumbnail.1000x1000 }}"  alt="Lydia Venieri, {{art.title}}" uk-img
-            </a>        </a>
+     {% if forloop.first %}
+         <p>{{art.description| safe}}</p>
+     {% endif %}
 
+   {% endfor %}
+ </div>
 
-            </div>
-            <div class="uk-width-1-3@m">
-                    {% if art.project %}
-                <h1 class="uk-margin-remove uk-h2">
-                    <a class="uk-link-reset" href="{% url 'project' art.project.slug %}">{{ art.project }}</a>
-                </h1>
-            {% endif %}
-                <p class="uk-text-lead">{{art.title}}</p>
-                <p>{{art.description|safe}}</p>
-            </div>
-        </div>
-    {% endif %}
-   {% endwith %}
+</article>
+     {% endif %}
 {% endblock %}
