@@ -223,9 +223,9 @@ Carte Blanche, Centre George Pompidou, 1987<br />
 
 
 <h2 class="uk-h4">Articles & References</h2>
-
-
 <!--
+{% comment %}
+
 “It's Happening- Lydia Venieri", L'Officiel, October 2013<br />
 
 “Mykonos Biennale", Maria Claire, July 2013<br />
@@ -413,14 +413,17 @@ Young creators, Anne Danberg, Art Press, 1989<br />
 
 Lydia Venieri, Dora Rogan, Kathimerini, 11/12/1988<br />
 L’Activite Culturelle, Canal Magazine, 1986<br />
+{% endcomment %}
 -->
+
+
 {% for ref in references %}
 <i>{{ref.title.strip}}</i>
 {% if ref.authors %}
 , {{ref.authors}}
 {% endif %}
 , {{ref.publication}}, {{ref.publication_date}}<br />
-
+         {% render_json_ld ref.sd %}
 {% endfor %}
 
 
