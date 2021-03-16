@@ -55,7 +55,7 @@
                             uk-video="automute: true" uk-video></iframe>
                     {% endvideo %}
                     {% else %}
-                         <a class="uk-link-reset" href="{%url 'art-work' work.slug %}"><img src="{{media.image.thumbnail.250x300}}" alt="Lydia Venieri, {{art.title}}" uk-img></a>
+                         <a class="uk-link-reset" href="{%url 'art-work' work.slug %}"><img data-src="{{media.image.thumbnail.200x200}}" alt="Lydia Venieri, {{art.title}}" uk-img></a>
                     {% endif %}
 
                     {% endwith %}
@@ -70,4 +70,31 @@
     </ul>
 
 </div>
+
+{% if is_paginated %}
+    <ul class="uk-pagination uk-flex-center" uk-margin>
+        {% if page_obj.has_previous %}
+            {% if page_obj.number > 2 %}
+                <li><a href="/work/{{ page_obj.previous_page_number }}"><span uk-pagination-previous></span></a></li>
+            {% else %}
+                 <li><a href="/"><span uk-pagination-previous></span></a></li>
+            {% endif %}
+        {% else %}
+            <li><a class="uk-disabled"><span uk-pagination-previous></span></a></li>
+        {% endif %}
+       <!-- {% for i in paginator.page_range %}
+            {% if page_obj.number == i %} -->
+                <li class="uk-active"><span>{{ i }} / {{paginator.num_pages}}</span></li>
+        <!-- {% else %}
+                <li><a href="?page={{i}}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %} -->
+        {% if page_obj.has_next %}
+            <li><a href="/work/{{ page_obj.next_page_number }}"><span uk-pagination-next></span></a></li>
+        {% else %}
+            <li><a class="uk-disabled"><span uk-pagination-next></span></a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
 {% endblock %}

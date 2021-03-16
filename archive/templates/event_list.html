@@ -12,7 +12,40 @@
 
 {% block content %}
 <h1 class="uk-invisible" style="height:0px;">Lydia Venieri</h1>
+
     {%for event in events %}
+<article class="uk-article {{event.slug}} {% if forloop.first %} uk-padding-remove-top  {% else %} uk-padding-large {% endif %}">
+    {% render_json_ld event.sd %}
+    <style>
+    {{event.css|safe}}
+    </style>
+    <h2 class="uk-h3 "><a class="uk-link-reset" href="{{event.get_absolute_url}}">{{event.title}}</a></h2>
+      <p>{{event.date}}</p>
+
+    <div class="uk-text-center">
+         {% if event.media.count %}
+{% with media=event.media.first %}
+    {% if media.image %}
+        <a class="uk-link-reset" href="{{event.get_absolute_url}}"><img   src="{{media.image.thumbnail.900x900}}" alt="Lydia Venieri, {{event.title}}" uk-img></a>
+    {% else %}
+         <div class="uk-cover-container uk-height-large">
+        {% video media.video_url as event_video %}
+            <iframe src="{{event_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true" uk-cover></iframe>
+        {% endvideo %}
+         </div>
+    {% endif %}
+{% endwith %}
+        {% else  %}
+          <div class="uk-cover-container uk-height-large">
+        {% render event.leader %}
+                 </div>
+           {% endif %}
+    </div>
+    </article>
+{% endfor %}
+
+{% comment %}
+ {%for event in events %}
         {% render_json_ld event.sd %}
         <style>
            {{event.css|safe}}
@@ -22,7 +55,7 @@
                 <div  uk-grid>
                     <div class="uk-text-center uk-width-expand">
                 <h2 class="uk-h3 "><a class="uk-link-reset" href="{{event.get_absolute_url}}">{{event.title}}</a></h2>
-
+        {% if event.media.count %}
                 {% if event.media.first %}
 
 
@@ -32,7 +65,7 @@
                     <div class="uk-text-center">
                     <a class="uk-link-reset" href="{{event.get_absolute_url}}"><img   src="{{media.image.thumbnail.900x900}}" alt="Lydia Venieri, {{event.title}}" uk-img></a>
                          <p>{{event.date}}</p>
-                         {% if event.leader %}
+                    {% if event.leader %}
         <div>
              {% render event.leader %}
         </div>
@@ -41,17 +74,23 @@
                 {% endif %}
                     </div>
                     {% else %}
-
                     <div class="uk-cover-container uk-height-large">
+
                         {% video media.video_url as event_video %}
                         <iframe src="{{event_video.url}}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true" uk-cover></iframe>
 
                         {% endvideo %}
+
                     </div>
                     {% endif %}
                     {% endwith %}
 
                   {% endif %}
+            {% else %}
+                           <p>{{event.date}}</p>
+                        {% render event.leader %}
+
+            {% endif %}
                 <p class="uk-article-meta"></p>
 
 
@@ -59,6 +98,7 @@
                 </div>
             </article>
     {% endfor %}
+{% endcomment %}
 
 {% if is_paginated %}
     <ul class="uk-pagination uk-flex-center" uk-margin>
