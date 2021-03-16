@@ -20,7 +20,7 @@ class MediaAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 
 class ArtAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'slug', 'year', 'tags', 'sd_type', 'is_visible', 'image_tag']
+    list_display = ['id', 'title', 'slug', 'year', 'tags', 'sd_type', 'is_visible', 'image_tag', 'media_count']
     # inlines = [
     #     ProtfolioInline,
     # ]
@@ -28,7 +28,7 @@ class ArtAdmin(admin.ModelAdmin):
     list_filter = ('project', 'is_visible', 'tags')
 
     list_editable = ['title', 'sd_type','year',   'is_visible']
-    fields = ['sd_type', 'title',  'project', 'year', 'tags', 'description',  'media', 'image_tag']
+    fields = ['sd_type', 'title',  'project', 'year', 'tags', 'description',  'media', 'image_tag', 'external_url']
     readonly_fields = ['image_tag']
     save_as = True
 tagulous_admin.register(models.Art, ArtAdmin)
@@ -50,6 +50,10 @@ class EventAdmin(SimpleHistoryAdmin):
     list_filter = ('is_visible', 'tags')
     fields = [ 'title', 'venue',  'start_date','end_date', 'is_visible', 'media', 'tags', 'description',  'image_tag']
     readonly_fields = ['image_tag']
+    search_fields = (
+        'title',
+        'description',
+    )
 tagulous_admin.register(models.Event, EventAdmin)
 
 
@@ -72,9 +76,9 @@ class ProjectAdmin(SimpleHistoryAdmin):
 
 admin.register(models.Event.tags.tag_model)
 
-@admin.register(models.Reference)
-class ReferenceAdmin(admin.ModelAdmin):
-    list_display = ['publication_date','title', 'publication', 'authors', 'is_visible', 'url',]
-    list_editable = ['is_visible', ]
+# @admin.register(models.Reference)
+# class ReferenceAdmin(admin.ModelAdmin):
+#     list_display = ['publication_date',] # 'title', 'publication', 'authors', 'is_visible', 'url',]
+#     # list_editable = ['is_visible', ]
 
 
