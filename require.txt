@@ -16,7 +16,7 @@ Click==7.0
 cookiecutter==1.6.0
 cssselect==1.0.3
 decorator==4.4.0
-Django==2.1.7
+Django==2.2.21
 django-admin-jqueryui112==1.12.1b5
 django-anymail==5.0
 django-appconf==1.0.3
