@@ -1,7 +1,7 @@
 appdirs==1.4.3
 appnope==0.1.0
 argon2-cffi==19.1.0
-arrow==0.13.1
+arrow==0.15.1
 awesome-slugify==1.6.5
 backcall==0.1.0
 beautifulsoup4==4.7.1
