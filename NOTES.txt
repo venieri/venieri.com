@@ -1,0 +1,96 @@
+thanos@MacBook-Pro venieri % mix phx.gen.live Archives Work works  project:references:Project  title:string slug:string date:date material:string size:string description:text  show:boolean   
+* creating lib/venieri_web/live/work_live/show.ex
+* creating lib/venieri_web/live/work_live/index.ex
+* creating lib/venieri_web/live/work_live/form_component.ex
+* creating lib/venieri_web/live/work_live/index.html.heex
+* creating lib/venieri_web/live/work_live/show.html.heex
+* creating test/venieri_web/live/work_live_test.exs
+* creating lib/venieri/archives/work.ex
+* creating priv/repo/migrations/20250119002324_create_works.exs
+* creating lib/venieri/archives.ex
+* injecting lib/venieri/archives.ex
+* creating test/venieri/archives_test.exs
+* injecting test/venieri/archives_test.exs
+* creating test/support/fixtures/archives_fixtures.ex
+* injecting test/support/fixtures/archives_fixtures.ex
+
+Add the live routes to your browser scope in lib/venieri_web/router.ex:
+
+    live "/works", WorkLive.Index, :index
+    live "/works/new", WorkLive.Index, :new
+    live "/works/:id/edit", WorkLive.Index, :edit
+
+    live "/works/:id", WorkLive.Show, :show
+    live "/works/:id/show/edit", WorkLive.Show, :edit
+
+
+Remember to update your repository by running migrations:
+
+    $ mix ecto.migrate
+
+thanos@MacBook-Pro venieri % 
+
+
+thanos@MacBook-Pro venieri % mix phx.gen.live Archives Media media caption:string slug:string exernal_ref:text height:integer width:integer old_id:integer original_file:string type:string meta_data:map
+* creating lib/venieri_web/live/media_live/show.ex
+* creating lib/venieri_web/live/media_live/index.ex
+* creating lib/venieri_web/live/media_live/form_component.ex
+* creating lib/venieri_web/live/media_live/index.html.heex
+* creating lib/venieri_web/live/media_live/show.html.heex
+* creating test/venieri_web/live/media_live_test.exs
+* creating lib/venieri/archives/media.ex
+* creating priv/repo/migrations/20250119162555_create_media.exs
+* creating lib/venieri/archives.ex
+* injecting lib/venieri/archives.ex
+* creating test/venieri/archives_test.exs
+* injecting test/venieri/archives_test.exs
+* creating test/support/fixtures/archives_fixtures.ex
+* injecting test/support/fixtures/archives_fixtures.ex
+
+Add the live routes to your browser scope in lib/venieri_web/router.ex:
+
+    live "/media", MediaLive.Index, :index
+    live "/media/new", MediaLive.Index, :new
+    live "/media/:id/edit", MediaLive.Index, :edit
+
+    live "/media/:id", MediaLive.Show, :show
+    live "/media/:id/show/edit", MediaLive.Show, :edit
+
+
+Remember to update your repository by running migrations:
+
+    $ mix ecto.migrate
+
+thanos@MacBook-Pro venieri % 
+
+thanos@MacBook-Pro venieri % mix phx.gen.live Archives Event events title:string slug:string description:text start_date:datetime end_date:datetime  venue:text show:boolean 
+* creating lib/venieri_web/live/event_live/show.ex
+* creating lib/venieri_web/live/event_live/index.ex
+* creating lib/venieri_web/live/event_live/form_component.ex
+* creating lib/venieri_web/live/event_live/index.html.heex
+* creating lib/venieri_web/live/event_live/show.html.heex
+* creating test/venieri_web/live/event_live_test.exs
+* creating lib/venieri/archives/event.ex
+* creating priv/repo/migrations/20250125174106_create_events.exs
+* creating lib/venieri/archives.ex
+* injecting lib/venieri/archives.ex
+* creating test/venieri/archives_test.exs
+* injecting test/venieri/archives_test.exs
+* creating test/support/fixtures/archives_fixtures.ex
+* injecting test/support/fixtures/archives_fixtures.ex
+
+Add the live routes to your browser scope in lib/venieri_web/router.ex:
+
+    live "/events", EventLive.Index, :index
+    live "/events/new", EventLive.Index, :new
+    live "/events/:id/edit", EventLive.Index, :edit
+
+    live "/events/:id", EventLive.Show, :show
+    live "/events/:id/show/edit", EventLive.Show, :edit
+
+
+Remember to update your repository by running migrations:
+
+    $ mix ecto.migrate
+
+thanos@MacBook-Pro venieri % 
