@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load embed_video_tags %}
+{% load archive_tags %}
+{% load render_json_ld from json_ld %}
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block content %}
+    {% render_json_ld project.sd %}
+<article class="uk-article ">
+
+    <h1 class="uk-margin-remove uk-h3"><a class="uk-link-reset" href="">{{ project.title }}</a></h1>
+
+    {{ project.statement|safe }}
+
+    <div class="uk-child-width-1-1@s uk-child-width-1-2@m  uk-child-width-1-2@l uk-text-center" uk-grid="masonry: true"
+      >
+
+        {% for art in project.visible_art %}
+
+        <div class="">
+            {% render_art art=art automute=False water=9 %}
+
+        </div>
+        {% endfor %}
+    </div>
+
+
+    {% endblock %}

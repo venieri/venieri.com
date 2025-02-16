@@ -1,0 +1,64 @@
+{% load meta %}
+
+{% load static %}
+{% load archive_tags %}
+
+<!DOCTYPE html>
+<html>
+    <head {% meta_namespaces %}>
+
+    {% include_analytics %}
+
+    {% include "meta/meta.html" %}
+        <title>{% block title %}Lydia Venieri {% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+         {% include_css_framework %}
+
+        <style type="text/css">
+  .nostyle {
+          margin: 0;
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
+          background: transparent;
+        }
+   </style>
+
+    </head>
+    <body>
+         <div class="uk-container uk-container-small">
+        <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+                    {% block nav_home %}<li class="uk-parent"><a href="{% url 'events' %}">Lydia Venieri</a></li>{% endblock %}
+                 {% block nav_bio %} <li class="uk-parent"><a href="{% url 'bio' %}">Bio</a></li>{% endblock %}
+                  {% block nav_projects %}<li class="uk-parent"><a href="{% url 'projects' %}">Projects</a></li>{% endblock %}
+                  {% block nav_work %}<li class="uk-parent"><a href="{% url 'work' %}">Work</a></li>{% endblock %}
+                  {% block nav_vw %}<li class="uk-parent"><a href="{% url 'virtual-world' %}">Virtual World</a></li>{% endblock %}
+        </ul>
+    </div>
+</nav>
+</div>
+
+ {% block about %}
+
+         {% endblock %}
+
+  {% block banner %}
+
+         {% endblock %}
+
+<div class="uk-section uk-padding-remove ">
+    <div class="uk-container  uk-container-small">
+         {% block content %}{% endblock %}
+    </div>
+</div>
+
+
+
+    </body>
+</html>

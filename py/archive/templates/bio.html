@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% load embed_video_tags %}
+{% load render_json_ld from json_ld %}
+{% load archive_tags %}
+   {% block nav_bio %} <li class="uk-active"><a href="#">Bio</a></li>{% endblock %}
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+{% block content %}
+
+
+
+
+
+
+
+
+<div uk-grid>
+    <div><p><h2 class="uk-h4">LYDIA VENIERI</h2>
+Born in Athens, Greece<br/>
+Lives and works in New York</p>
+    <p><h2 class="uk-h4">EDUCATION</h2>
+
+Studied at the Ecole Nationale, Superieure des<br/>
+Beaux Arts<p>
+    </div>
+    <div>
+
+         {%media id=11 as art %}
+        <img src="{{art.image.thumbnail.650x433}}" alt="Lydia Venieri, {{art.caption}}" uk-img></div>
+        {% render_json_ld art.sd %}
+</div>
+
+
+
+
+<h2 class="uk-h4">Solo Shows</h2>
+
+    {%for event in solo_shows %}
+
+            {% render_json_ld event.sd %}
+            {% ifchanged event.start_date.year %}
+
+            {% if event.start_date.year == 2007 %}
+            {%media  id=12 as tree %}
+            <img class="uk-align-center  uk-align-right@m" data-src="{{tree.image.thumbnail.600x400}}"
+               alt="Lydia Venieri, {{tree.caption}}" uk-img>
+                {% render_json_ld tree.sd %}
+           {%endif %}
+
+                <b>{{event.start_date|date:"Y" }}</b>
+            {% endifchanged %}
+<i><a class="uk-link-text" href="{{event.get_absolute_url}}">{{event.title|title}}</a></i>{% if event.venue %},
+                {{event.venue|title}} <!--  {{event.location|title}} -->
+                {% endif %}
+        <br/>
+        {% endfor %}
+
+
+ {%media_image  id=14 as studio %}
+<img class="uk-align-center" data-src="{{studio.thumbnail.600x400}}"
+   alt="Lydia Venieri, {{studio.caption}}" uk-img>
+
+
+
+<h2 class="uk-h4">Group Shows</h2>
+
+{%for event in group_shows %}
+        {% render_json_ld event.sd %}
+            {% ifchanged event.start_date.year %}
+
+            {% if event.start_date.year == 2011 %}
+                {%media  id=13 as deer %}
+                <img class="uk-align-center  uk-align-left@m" data-src="{{deer.image.thumbnail.200x400}}"
+                   alt="Lydia Venieri, {{deer.caption}}" uk-img>
+                 {% render_json_ld deer.sd %}
+            {%endif %}
+            {% if event.start_date.year == 2000 %}
+                {%media  id=17 as detail %}
+                <img class="uk-align-center" data-src="{{detail.image.thumbnail.400x600}}"
+                   alt="Lydia Venieri, {{detail.caption}}" uk-img>
+                    {% render_json_ld detail.sd %}
+            {%endif %}
+
+
+                <b>{{event.start_date|date:"Y" }}</b>
+            {% endifchanged %}
+            <i>{{event.title|title}}</i>
+                {% if event.venue %}
+                    , {{event.venue|title}} <!-- , {{event.location|title}} -->
+            {% endif %}
+        <br />
+{% endfor %}
+
+{%media  id=16 as studio %}
+<img class="uk-align-center" data-src="{{studio.image.thumbnail.600x400}}"
+   alt="Lydia Venieri, {{studio.caption}}" uk-img>
+{% render_json_ld studio.sd %}
+
+<h2 class="uk-h4">iPhone Art</h2>
+Moonlight, 2009, http://itunes.apple.com/us/app/moonlight<br />
+
+
+<h2 class="uk-h4">Animations and Movies</h2>
+The Dolphin Conspiracy, 2011<br />
+Tomorrow, 2009<br />
+Epilepsy, 2005<br />
+Last Conflict, 2005<br />
+For Ever After, 2004<br />
+Sleeping Beauty Conscience, 2002<br />
+Martha, 1996<br />
+Egg, 1995<br />
+
+
+
+<h2 class="uk-h4">Books</h2>
+Moonlight, Lydia Venieri, 2006<br />
+Beyond Being, Lydia Venieri, 2000<br />
+60 Drawings for Healthy Perversions by Tzimy Panousi,  1995<br />
+
+
+
+
+
+<h2 class="uk-h4">Internet Art</h2>
+
+{%for art in internet_art %}
+          {% render_json_ld art.sd %}
+    {% render_json_ld art.sd %}
+    <a href="{{art.description}}">{{ art.title }}, {{art.year}}</a><br />
+{%endfor%}
+
+
+
+
+<h2 class="uk-h4">Theatre</h2>
+{%for theatre in theatres %}
+      {% render_json_ld theatre.sd %}
+    {{ theatre.description}}, {{theatre.year}}<br />
+{% endfor %}
+
+
+
+
+
+<h2 class="uk-h4">Awards and Commissions</h2>
+
+Medal for Sculpture, Academie Francaise de Paris, 2004<br />
+Tower of Symbols, Open Air Sculpture, Central Athens, 2004<br />
+Wall of Symbols, Sculpture, Atelier Mallet Stevens, Paris<br />
+Lydia on Broadway.com, CD-ROM sponsored by Art Magazine and Hewlett Packard<br />
+“Infinity”, Collaboration with artist Takis on the sculpture.<br />
+Medal for Sculpture, Academie Francaise de Paris<br />
+Tower of Symbols, Open Air Sculpture, Central Athens, 2004<br />
+Wall of Symbols, Sculpture, Atelier Mallet Stevens, Paris<br />
+Lydia on Broadway.com, CD-ROM sponsored by Art Magazine and Hewlett Packard<br />
+"Infinity", Collaboration with artist Takis on the sculpture.<br />
+Commande en plein air d'une serie de sculputre Eros et Psyche, Fondation Alexandre Iolas, Athenes<br />
+Commande d'une serie de sculptures pour l'Incitation a la Creation, Abbaye de Montmajour, Arles<br />
+Carte Blanche, a l'occation de l'anniversaire de 10 ans du Centre George Pompidou, Galeries Contemporaines, Paris
+
+
+
+
+
+<h2 class="uk-h4">Exhibition Catalogs</h2>
+
+The Dolphin Conspiracy, Nadia Argyropoulou, 2010<br />
+
+No Evil, Beth Wilson, 2008<br />
+
+Oh You beautiful Doll, Douglas F. Maxwell, 2006<br />
+
+For Ever After, Niko Daskalothanassi, 2005<br />
+
+Olympic 2004, Nelly Kyriazi, 2004<br />
+
+Alive in new York, Nadia Argyropoulou, 2003<br />
+
+Hibernation, Marek Bartelik, 2002<br />
+
+Propos d’Europe, Jean Guyot and Pascale le Thorel, 2002<br />
+
+Pandora’s Box, Women Beyond Borders, Sania Papa, 2000<br />
+
+Truthful and Authentic Communication, Sania Papa, 2000<br />
+
+Beyond Being, Lydia Venieri, 2000<br />
+
+Approaching Hellinism, Nelly Kyriazi, 1999<br />
+
+Lydia’s Cool Memories, Sania Papa, 1997<br />
+Who is Nostalgic, Nikos Dalaretos, 1999<br />
+
+Manifesta, 1996<br />
+
+Telluric Manifesto, Sania Papa, 1994<br />
+
+Anima Mundis, Takis, 1993<br />
+
+Ermata, Wanderings of the Sacred, Sania Papa, 1992<br />
+
+Spira, Sania Papa, 1992<br />
+
+Metamorphose of the Modern, Anna Kafetzi, 1991<br />
+
+Chimes of Time, Jacques Lacarriere, 1990<br />
+
+Humor ad Revolution, Cannes & Barselona, 1989<br />
+
+Spirit and Body,  Dora Rogan, 1989<br />
+
+The Gods Revist, Pierrre Giquel, 1988<br />
+
+The Figures of Lydia, Demosthenes Davetas, Edition Agras, 1988<br />
+
+Lydia Venieri -FIAC 88, Nicole Kinge, 1988<br />
+
+Lydia Venieri, Gerard Barriere, 1988<br />
+
+Carte Blanche, Centre George Pompidou, 1987<br />
+
+
+
+<h2 class="uk-h4">Articles & References</h2>
+<!--
+{% comment %}
+
+“It's Happening- Lydia Venieri", L'Officiel, October 2013<br />
+
+“Mykonos Biennale", Maria Claire, July 2013<br />
+
+“Work in Progress", V Magazine, February 2013<br />
+
+New York: A Photographer's City, Edited by Marla Hamburg Kennedy, Rizzoli, 2011<br />
+
+“Fairy Tale”, Maison & Decoration, August, 2009<br />
+
+“Lydia Venieri - Caramelos amargos,  Thomas Vio,Art AlLimite, No33, 2008<br />
+
+“No Evil” Series,  Jean Miyake Downey, Japan Focus, April, 2008<br />
+
+Photography Fall 2007, John Haber, Haberarts, April 2008<br />
+
+War Games by Lydia Venieri, Yatser, November 2007<br />
+
+War Games at Stux Gallery, Holden, Holden’s Blog, November 2007<br />
+
+Lydia Venieri’s  Politically Charged Dollies, Abby Hertz, Few Reviews, November 2007<br />
+
+Decouverte: Lydia Venieri, Pierrick Thebault, November 2007<br />
+
+ShowOff: les enfant aussi, Connaissance des Arts, October 2007<br />
+
+Lydia  Veneiri, The Caretaker, BOE Gazette, October 2007<br />
+
+The Nightly News, Lieven De Boeck, AbsoluteArts, January 2007<br />
+
+Il Mercato e le Sue Passioni, Lucia Spadano, Segno, November 2007<br />
+
+Mary Hrbacek, Lydia Venieri at Stux Gallery, M, November 2007<br />
+
+Lydia Venieri - War Games, le Parisien, October 2007<br />
+
+War Games, Sandra Lapaz ,AM New York, September 2007<br />
+
+Art Under Siege, Julia Morton, New York Press, September 2007<br />
+
+Cult Carnage, R.C Baker, Village Voice, January 2007<br />
+
+Vision To Visuals: War games, Baldev Duggal,  Digital PhotoPro, November 2007<br />
+
+Nature Wins Back the Planet,Glow,  Xenia Givoglu, July 2006<br />
+
+Lydia Venieri, Sarah Tanguy, Sculpture, September 2005<br />
+
+Hibernation, Nadia Argyropoulou, Marie Claire, 2004<br />
+
+Hibernation, Natalie Angles, Location One, 2004<br />
+
+Theatrical Universe,  Arian Lazaridi, Vogue, May 2004<br />
+
+Between Heaven and Earth, Katerina Asimakopoulou/Kostas Pigadas, Vogue,  May 2003<br />
+
+Art Sales: Battle of the Art Fairs, Colin Gleadell, Daily Telegraph, 3 October 2003<br />
+
+Myth Maker, Flavia Bigi, Soloarte, 2002<br />
+
+Lydia Venieri, Kathimerini, 2002<br />
+
+Sleeping beauty Awakes, Paraskevi Katiergi, Ta Nea, 21/10/02<br />
+
+Maison Decoration, Oct 2002<br />
+
+Naughty Sketches, Hary Savopoulos, Agelioforos, 16/4/2002<br />
+Ellie’s melting Ice Cream, Thessalokini, 12/4/2002
+Dolls in the Snow, Henrie-Francois De Bailleux, Liberation, April 2002<br />
+
+New York Stories, Nina maria Pashalidou/Caliope, Life & Style, June 2001<br />
+With the Guarantee of the Imagination, Fotini Bloyianni, Panselinos, August 2000<br />
+Sketches and Words, Taki Maurotas, Marie Claire, May 2000<br />
+
+
+
+
+
+
+Harpers Bazzar, George Carouzakis/Camilo Nollas May 2000<br />
+
+Beyond Being, Ego, Apr 2000<br />
+
+Eli’s Big Trip, Enimerosi, Apr 2000<br />
+
+Delphi, Elenor Heartney Hellas Sculpture, Winter 1999<br />
+
+Trash Art, Ozon, Oct 1998<br />
+
+The Athenians, Ana Mihalitsianou, L’Officiel, 1998<br />
+
+Trash Art, Klick, Oct 1998<br />
+Trash Art, Ependtis, 19/9/98<br />
+
+Trash Art, Yanni Dimitriadi, Diphano, 1998<br />
+
+Two Days in Gazi, Kathimerini, 18/9/98<br />
+
+Art with Trash, Michalis Petrides, Eleutherotypia, 11/9/98<br />
+
+Art with Trash, Exousia, 8/9/98<br />
+
+Dictionary of the Greek Artist, 16th-20th Century, Melissa Editions,1997<br />
+
+Two Strangers in the Moon, Eleutheros Typos, 25/9/97<br />
+
+This Little World, Seventeen, Flora Camhi, December 1997<br />
+
+Lydia Venieri: My Relation with the Computer is Platonic. Her Internet Work Since 1994, Amaryssia,  25/11/96<br />
+CD_ROM or not CD-ROM, Aspasia Dimitriadi, Art Magazine, 1996<br />
+
+Anima Mundis/ Memory Installation, Athinorama, Nov 1995<br />
+
+** Pandoras Box, Art Magazine,<br />
+
+The Sound of the Body, Maria Maragou, Eleutherotypia, 4/11/95<br />
+
+Time Environment & Humans, Angelo Polydoro, Amarysia, 2/6/1995<br />
+
+Lydia Venieri by Nikos Stathoulis, Apogeumatini, 1995<br />
+
+Telluric Manifeto, Sania Papa, Inside, Mar 1995<br />
+
+Lydia Venieri’s show in Larisa, Eleutreria, 25/4/1995<br />
+
+Telluric Manifesto, Henrie-Francois De Bailleux, Liberation, 1995<br />
+
+At the Planet of Art, Olivia Manzari, Votre Beautué, Feb 1995<br />
+
+Telluric Manifesto,   Nikos Dakalothanasis, Art Magazine, 1995<br />
+
+Anima Mundis, Arti, Eleni Pyrioti, Oct 1995<br />
+
+Successfull Meeting of Creation in Delphi, Amanda Mihalopoulou, Kathimerini, 10/8/1994<br />
+
+Sculptures Under the Shadow of Apollo, Maria Maragou, Eleutherotypia, 8/8/94<br />
+
+The Meeting, Elenor Heartney, Arti, 1994<br />
+
+With the Winds of Glory, Maria Hasapi, Amaryssia, 17/10/94<br />
+
+Art with Lava, Dimitra Rouboula, Ethnos, 7/10/94<br />
+
+Sculpture pierces the Universe, Thanasis Lalas, To Perodiko, 1994<br />
+
+The Telluric Manifesto, Marina Pisperi, Reumata, Nov/Dec 1994<br />
+
+Sculputres in Delphi, LL, Eleutherotypia, 1994<br />
+
+The Mythical World of Lydia Venieri, Tonia Bogdano/Tasos Paylidis, Madame Figaro, 1994<br />
+
+Lydia Venieri,  Nikos Dakalothanasis,  Art Magazine, 1994<br />
+
+The Art of Memory, Amanda Mihalakopoulou, Elle, 1994<br />
+
+Person, Ta Nea, 1/8/94<br />
+
+Internet Sculpture, Irini Mitropoulos, Adesmeutos, 1994<br />
+
+The Poetic Universe of Lydia Venieri, Agape Tsahpinoglou/Antoine Rosés, Elle Decor, 1992<br />
+
+Lydia’s Universe, Elite, 1992<br />
+
+Lydia Venieri an Active Volcano, Dossi Iordanidou, Diva, December 1991<br />
+
+Lydia Venieri, Alex du Val, Max, 1991<br />
+
+With Volcanic Lava, Nikos Stathoulis, Votre Beautué, Jan 1991<br />
+
+The Guts of Earth, Sania Papa, Art Magazine, 1991<br />
+
+Universal Harmony, La Mia Casa, Nov 1990<br />
+
+The Sistres of Time, George Yanopoulo/Athena Kyriakidou, SL, December 1990<br />
+
+The Sistres of Time, Sania Papa, Sima, 1990<br />
+
+Lydia Venieri, Apogeumatini, 16/12/90<br />
+
+Universal Harmonies at the New Mosque, Olga Bati, Gynaika, 1990<br />
+
+This little great world, Veneri in Thesalonica, Takis Maurotas, Pantheon , 17 December 1990<br />
+
+Young creators, Anne Danberg, Art Press, 1989<br />
+
+Lydia Venieri, Dora Rogan, Kathimerini, 11/12/1988<br />
+L’Activite Culturelle, Canal Magazine, 1986<br />
+{% endcomment %}
+-->
+
+
+{% for ref in references %}
+<i>{{ref.title.strip}}</i>
+{% if ref.authors %}
+, {{ref.authors}}
+{% endif %}
+, {{ref.publication}}, {{ref.publication_date}}<br />
+         {% render_json_ld ref.sd %}
+{% endfor %}
+
+
+
+{% endblock %}

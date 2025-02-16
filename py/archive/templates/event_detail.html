@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load embed_video_tags %}
+{% load archive_tags %}
+{% load render_json_ld from json_ld %}
+{% block about_lydia %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block content %}
+
+{% render_json_ld event.sd %}
+<article class="uk-article">
+
+
+
+
+    {% render event.description %}
+
+
+
+
+
+
+</article>
+
+{% endblock %}
