@@ -26,8 +26,8 @@ defmodule VenieriWeb.Router do
     live "/", EventList
     # live "/", Archive.EventList
     # get "/", PageController, :events
-    get "/bio", PageController, :bio
-    get "/projects", PageController, :projects
+    live "/bio", BioLive
+    live "/projects", ProjectsLive
     get "/projects/:id", PageController, :project
     get "/events", PageController, :events
     get "/events/:id", PageController, :event

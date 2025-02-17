@@ -102,13 +102,29 @@ defmodule Venieri.Archives.Projects do
     Project.changeset(project, attrs)
   end
 
-  def image_url(%Project{} = project, width) do
+
+  def get_artworks(%Project{} = project) do
     project
     |> Repo.preload(:works)
     |> then(& &1.works)
+  end
+
+  def get_artwork(%Project{} = project) do
+    project
+    |> get_artworks()
     |> case do
-      [] -> ""
-      works_array -> works_array |> hd |> Works.image_url(width)
+      [] -> nil
+      works_array -> works_array |> hd
+    end
+  end
+
+
+  def image_url(%Project{} = project, width) do
+    project
+    |> get_artwork()
+    |> case do
+      nil -> ""
+      artwork -> Works.image_url(artwork, width)
     end
   end
 end

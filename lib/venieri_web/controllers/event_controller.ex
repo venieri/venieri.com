@@ -3,12 +3,7 @@ defmodule VenieriWeb.EventController do
 
   alias Venieri.Repo
   alias Venieri.Archives.Events
-
-
-
-
-
-
+  import VenieriWeb.Components.Navbar
 
   def show(conn, %{"id" => id}) do
     event = Events.get!(id)
