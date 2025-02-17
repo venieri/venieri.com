@@ -1,0 +1,52 @@
+   
+<div class="">
+
+  <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
+  <div class="">
+
+<div class="carousel max-h-screen">
+    <%= for {work, index} <- (@project.works|> Enum.with_index())  do %>
+        <div id="slide#{index}" class="carousel-item relative w-full">
+            <figure class="">
+            <div class="flex justify-center h-1/2">
+                <img class="" 
+                    src={"/media/" <> Venieri.Archives.Works.image_url(work, 1920)} />
+            </div>
+                <figcaption class="text-sm text-center text-gray-500 dark:text-gray-400">
+                    <%= work.title %>
+                </figcaption>
+            </figure>
+         </div>
+  <% end %>
+</div>
+
+
+   
+    <div class="grid grid-cols-3 gap-4">
+      <%= for batch <- Enum.chunk_every(@project.works, 2)  do %>
+        <div class="grid gap-4 auto-rows-min">
+          <%= for work <- batch  do %>
+            <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <a href={"/works/#{work.id}"}>
+                <img class="object-cover w-64  md:h-auto" 
+             
+                src={"/media/" <> Venieri.Archives.Works.image_url(work, 480)} alt="" /> 
+        
+        </a>
+              <div class="p-5">
+                <a href="#">
+                  <h2 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+                    <span class=" break-keep"><%= work.title %></span>
+                  </h2>
+                </a>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+</div>
+</div>
+
+
+

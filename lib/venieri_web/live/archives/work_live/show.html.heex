@@ -1,0 +1,34 @@
+<.header>
+  Work {@work.id}
+  <:subtitle>This is a work record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/archives/works/#{@work}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit work</.button>
+    </.link>
+  </:actions>
+</.header>
+
+ 
+
+<.list>
+  <:item title="Title">{@work.title}</:item>
+  <:item title="Slug">{@work.slug}</:item>
+  <:item title="Year">{@work.year}</:item>
+  <:item title="Material">{@work.material}</:item>
+  <:item title="Size">{@work.size}</:item>
+  <:item title="Description">{@work.description}</:item>
+  <:item title="Show">{@work.show}</:item>
+</.list>
+
+<.back navigate={~p"/archives/works"}>Back to works</.back>
+
+<.modal :if={@live_action == :edit} id="work-modal" show on_cancel={JS.patch(~p"/archives/works/#{@work}")}>
+  <.live_component
+    module={VenieriWeb.Archives.WorkLive.FormComponent}
+    id={@work.id}
+    title={@page_title}
+    action={@live_action}
+    work={@work}
+    patch={~p"/archives/works/#{@work}"}
+  />
+</.modal>

@@ -1,0 +1,14 @@
+mix phx.gen.live Archives Project projects  title:string slug:string description:text statement:text show:boolean 
+Add the live routes to your browser scope in lib/venieri_web/router.ex:
+
+    live "/projects", ProjectLive.Index, :index
+    live "/projects/new", ProjectLive.Index, :new
+    live "/projects/:id/edit", ProjectLive.Index, :edit
+
+    live "/projects/:id", ProjectLive.Show, :show
+    live "/projects/:id/show/edit", ProjectLive.Show, :edit
+
+
+Remember to update your repository by running migrations:
+
+    $ mix ecto.migrate

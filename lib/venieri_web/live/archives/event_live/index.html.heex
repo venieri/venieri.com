@@ -1,0 +1,33 @@
+ <ul>
+      <%= for {id, event} <- @streams.events  do %>
+        <li>
+          <div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+            <div class="px-4 py-5 sm:px-6">
+              <h2 class="text-2xl font-extrabold dark:text-white"><%= event.title %></h2>
+              <%= event.start_date %>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              <img class="object-cover w-full  md:h-auto" src={"/media/" <> Venieri.Archives.Events.image_url(event, 640)} alt="" /> 
+        
+            </div>
+            <%!-- <div class="px-4 py-4 sm:px-6">
+              <%= event.description |> Phoenix.HTML.raw() %>
+            </div> --%>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+
+
+    
+
+<.modal :if={@live_action in [:new, :edit]} id="event-modal" show on_cancel={JS.patch(~p"/archives/events")}>
+  <.live_component
+    module={VenieriWeb.Archives.EventLive.FormComponent}
+    id={@event.id || :new}
+    title={@page_title}
+    action={@live_action}
+    event={@event}
+    patch={~p"/archives/events"}
+  />
+</.modal>

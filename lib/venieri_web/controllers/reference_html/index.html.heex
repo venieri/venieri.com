@@ -1,0 +1,29 @@
+<.header>
+  Listing Archives references
+  <:actions>
+    <.link href={~p"/archives/references/new"}>
+      <.button>New Reference</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="archives/references" rows={@references} row_click={&JS.navigate(~p"/archives/references/#{&1}")}>
+  <:col :let={reference} label="Title">{reference.title}</:col>
+  <:col :let={reference} label="Description">{reference.description}</:col>
+  <:col :let={reference} label="Publication date">{reference.publication_date}</:col>
+  <:col :let={reference} label="Publication">{reference.publication}</:col>
+  <:col :let={reference} label="Authors">{reference.authors}</:col>
+  <:col :let={reference} label="Article url">{reference.article_url}</:col>
+  <:col :let={reference} label="Uploaded file">{reference.uploaded_file}</:col>
+  <:action :let={reference}>
+    <div class="sr-only">
+      <.link navigate={~p"/archives/references/#{reference}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/archives/references/#{reference}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={reference}>
+    <.link href={~p"/archives/references/#{reference}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

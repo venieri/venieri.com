@@ -1,0 +1,21 @@
+<.header>
+  Reference {@reference.id}
+  <:subtitle>This is a reference record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/archives/references/#{@reference}/edit"}>
+      <.button>Edit reference</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title">{@reference.title}</:item>
+  <:item title="Description">{@reference.description}</:item>
+  <:item title="Publication date">{@reference.publication_date}</:item>
+  <:item title="Publication">{@reference.publication}</:item>
+  <:item title="Authors">{@reference.authors}</:item>
+  <:item title="Article url">{@reference.article_url}</:item>
+  <:item title="Uploaded file">{@reference.uploaded_file}</:item>
+</.list>
+
+<.back navigate={~p"/archives/references"}>Back to archives/references</.back>
