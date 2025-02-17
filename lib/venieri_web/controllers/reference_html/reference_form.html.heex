@@ -1,0 +1,15 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:title]} type="text" label="Title" />
+  <.input field={f[:description]} type="text" label="Description" />
+  <.input field={f[:publication_date]} type="date" label="Publication date" />
+  <.input field={f[:publication]} type="text" label="Publication" />
+  <.input field={f[:authors]} type="text" label="Authors" />
+  <.input field={f[:article_url]} type="text" label="Article url" />
+  <.input field={f[:uploaded_file]} type="text" label="Uploaded file" />
+  <:actions>
+    <.button>Save Reference</.button>
+  </:actions>
+</.simple_form>

@@ -1,0 +1,25 @@
+
+
+
+
+
+
+
+<div class="carousel max-h-screen">
+    <%= for {work, index} <- (Venieri.Archives.Projects.get!(4) |> Venieri.Repo.preload(:works) |> then(& &1.works) |> Enum.sort_by(& &1.id) |> Enum.with_index())  do %>
+        <div id="slide#{index}" class="carousel-item relative">
+            <figure class="">
+            <div class="flex justify-center h-4/5">
+                <img class="" 
+                    src={"/media/" <> Venieri.Archives.Works.image_url(work, 1920)}  />
+            </div>
+                <figcaption class="mt-2 text-center text-gray-800 dark:text-gray-400">
+                <div class="center w-1/2 mx-auto">
+                    <%= work.title %>
+                    <blockquote class="text-sm text-center text-gray-500 dark:text-gray-400"><%= work.description %></blockquote>
+                </div>
+                </figcaption>
+            </figure>
+         </div>
+  <% end %>
+</div>

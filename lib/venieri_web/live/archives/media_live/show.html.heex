@@ -1,0 +1,34 @@
+<.header>
+  Media {@media.id}
+  <:subtitle>This is a media record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/archives/media/#{@media}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit media</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Caption">{@media.caption}</:item>
+  <:item title="Slug">{@media.slug}</:item>
+  <:item title="Exernal ref">{@media.exernal_ref}</:item>
+  <:item title="Height">{@media.height}</:item>
+  <:item title="Width">{@media.width}</:item>
+  <:item title="Old">{@media.old_id}</:item>
+  <:item title="Original file">{@media.original_file}</:item>
+  <:item title="Type">{@media.type}</:item>
+  <:item title="Meta data">{@media.meta_data |> Phoenix.json_library().encode!() |> Jason.Formatter.pretty_print()}</:item>
+</.list>
+
+<.back navigate={~p"/media"}>Back to media</.back>
+
+<.modal :if={@live_action == :edit} id="media-modal" show on_cancel={JS.patch(~p"/archives/media/#{@media}")}>
+  <.live_component
+    module={VenieriWeb.Archives.MediaLive.FormComponent}
+    id={@media.id}
+    title={@page_title}
+    action={@live_action}
+    media={@media}
+    patch={~p"/archives/media/#{@media}"}
+  />
+</.modal>

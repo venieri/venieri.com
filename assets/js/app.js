@@ -23,13 +23,14 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import { CodeEditorHook } from "../../deps/live_monaco_editor/priv/static/live_monaco_editor.esm"
+import InfiniteScroll from "./pagination/infinite_scroll"
 
 window.Alpine = Alpine;
 Alpine.start();
 
 
 
-let Hooks = {}
+let Hooks = {InfiniteScroll}
 Hooks.CodeEditorHook = CodeEditorHook
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
