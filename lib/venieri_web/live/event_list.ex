@@ -4,9 +4,13 @@ defmodule VenieriWeb.EventList do
   alias Venieri.Archives.Events
   alias Venieri.Archives.Models.Event
 
+  import VenieriWeb.Components.Navbar
+
   @impl true
   def render(assigns) do
     ~H"""
+     <.navbar socket={@socket}/>
+
       <div id="event-list-container">
         <div >
           <ul id="event-list" id="infinite-scroll-body" phx-update="append">

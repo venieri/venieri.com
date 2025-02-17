@@ -10,5 +10,7 @@ defmodule VenieriWeb.Layouts do
   """
   use VenieriWeb, :html
 
+
+
   embed_templates "layouts/*"
 end

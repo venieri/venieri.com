@@ -6,5 +6,7 @@ defmodule VenieriWeb.PageHTML do
   """
   use VenieriWeb, :html
 
+  import VenieriWeb.Components.Navbar
+
   embed_templates "page_html/*"
 end

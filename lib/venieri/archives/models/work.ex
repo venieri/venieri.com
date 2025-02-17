@@ -61,6 +61,32 @@ defmodule Venieri.Archives.Models.Work do
   end
 
 
+
+  def get_media(%Work{} = work) do
+    work
+    |> Repo.preload(:media)
+    |> then(& &1.media)
+  end
+
+  def get_media_poster(%Work{} = work) do
+    work
+    |> get_media()
+    |> case do
+      [] -> nil
+      media_array -> media_array |> hd
+    end
+  end
+
+
+  def image_url(%Work{} = work, width) do
+    work
+    |> get_media_poster()
+    |> case do
+      nil -> ""
+      media -> media.slug <>"-#{width}.avif"
+    end
+  end
+
 end
 
 defimpl SEO.OpenGraph.Build, for: Venieri.Archives.Models.Work do
