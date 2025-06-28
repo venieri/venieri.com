@@ -1,6 +1,6 @@
 alias Venieri.Archives.References
 
-"priv/repo/data/references.json"
+"/Users/thanos/work/v1/venieri.com/priv/repo/data/references.json"
 |> File.read!()
 |> Jason.decode!()
 # |> Enum.take(1)

@@ -17,7 +17,8 @@ defmodule VenieriWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts media images favicon.ico robots.txt uploads)
+  def static_paths,
+    do: ~w(assets fonts references images media press_releases favicon.ico robots.txt)
 
   def router do
     quote do
@@ -38,9 +39,7 @@ defmodule VenieriWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: VenieriWeb.Layouts]
+      use Phoenix.Controller, formats: [:html, :json]
 
       use Gettext, backend: VenieriWeb.Gettext
 
@@ -52,8 +51,7 @@ defmodule VenieriWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {VenieriWeb.Layouts, :app}
+      use Phoenix.LiveView
 
       unquote(html_helpers())
     end
@@ -90,8 +88,9 @@ defmodule VenieriWeb do
       # Core UI components
       import VenieriWeb.CoreComponents
 
-      # Shortcut for generating JS commands
+      # Common modules used in templates
       alias Phoenix.LiveView.JS
+      alias VenieriWeb.Layouts
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())

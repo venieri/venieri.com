@@ -9,8 +9,8 @@ defmodule Venieri.Archives.Models.EventTag do
   alias Venieri.Archives.Models.Tag
 
   schema "archives_events_tags" do
-    belongs_to :event, Event
-    belongs_to :tag, Tag
+    belongs_to(:event, Event)
+    belongs_to(:tag, Tag)
 
     timestamps()
   end

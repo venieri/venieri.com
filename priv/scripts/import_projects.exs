@@ -1,6 +1,6 @@
 alias Venieri.Archives.Projects
 
-"priv/repo/data/projects.json"
+"/Users/thanos/work/v1/venieri.com/priv/repo/data/projects.json"
 |> File.read!()
 |> Jason.decode!()
 |> Enum.map(fn project ->

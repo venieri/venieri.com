@@ -1,68 +1,92 @@
 
 alias Venieri.Repo
-alias Venieri.Archives.Events
+alias Venieri.Archives.Posts
 alias Venieri.Archives.Models.Media
-alias Venieri.Archives.Models.EventMedia
+alias Venieri.Archives.Models.PostMedia
 alias Venieri.Archives.Models.Tag
 alias Venieri.Archives.Tags
-alias Venieri.Archives.Models.EventTag
-# require Logger
+alias Venieri.Archives.Models.PostTag
 
-"priv/repo/data/events.json"
-|> File.read!()
-|> Jason.decode!()
-# |> Enum.take(10)
-# |> Enum.filter(fn %{"leader" => leader} -> leader != "" end)
-|> Enum.map(&IO.inspect/1)
-|> Enum.map(fn event_json ->
-  {:ok, event} =
-  %{
-    description: event_json["description"],
-    title: event_json["title"],
-    start_date: event_json["start_date"],
-    end_date: event_json["end_date"],
-    venue: event_json["venue"],
-    show: event_json["published"],
-    description: event_json["description"]
-  }
-  |> Events.create
-  media_array = event_json["media_array"]
-  if is_list(media_array) do
-  media_array
-  |> Enum.map(fn media_id ->
-      media = Repo.get_by(Media, old_id: media_id)
-          if media != nil do
-            changeset = EventMedia.changeset(%EventMedia{}, %{
-              event_id: event.id,
-              media_id: media.id
-              })
-            Repo.insert!(changeset)
-          end
-    end)
-  end
-  tag_array = event_json["tag_array"]
-  if is_list(tag_array) do
-    tag_array
+# require Logger
+#
+#
+process_media = fn
+  post, nil -> []
+  post, media_list ->
+  media_list
+  |> Enum.map(fn media ->
+    media = Repo.get_by(Media, old_id: media)
+    if media != nil do
+      changeset = PostMedia.changeset(%PostMedia{}, %{
+        post_id: post.id,
+        media_id: media.id
+      })
+      Repo.insert!(changeset)
+    end
+  end)
+end
+
+process_tags = fn
+  post, nil -> []
+  post, tag_list ->
+    tag_list
     |> Enum.map(fn tag_label ->
       tag =
         Repo.get_by(Tag, label: tag_label)
-        |> case do
-          nil ->
-            {:ok, tag} = Tags.create(%{label: tag_label})
-            tag
-          tag -> tag
-        end
-      EventTag.changeset(%EventTag{}, %{
-        event_id: event.id,
+      |> case do
+        nil ->
+          {:ok, tag} = Tags.create(%{label: tag_label})
+          tag
+        tag -> tag
+      end
+      changeset = PostTag.changeset(%PostTag{}, %{
+        post_id: post.id,
         tag_id: tag.id
         })
-      |> Repo.insert!
+      Repo.insert!(changeset)
     end)
+end
+
+
+"/Users/thanos/work/v1/venieri.com/priv/repo/data/events.json"
+|> File.read!()
+|> Jason.decode!()
+# |> Enum.filter(& is_list(&1["media_array"]) && length(&1["media_array"]) > 0)
+# |> Enum.take(1)
+|>Enum.map(&IO.inspect/1)
+|> Enum.map(fn %{
+  "end_date" => end_date,
+  "caption" => caption,
+  "description" =>description,
+  "is_visible" => is_visible,
+  "leader" => leader,
+  "media_array" => media_array,
+  "published" => published,
+  "slug" => slug,
+  "start_date" => start_date,
+  "tag_array" => tag_array,
+  "title" => title,
+  "venue" => venue
+} ->
+%{
+  title: title,
+  logline: leader,
+  description: description,
+  post_date: (start_date |> Timex.parse!("{RFC3339}")),
+  to_show: is_visible,
+  orientation: "auto",
+  venue: venue,
+  start_date: start_date,
+  end_date: end_date
+}
+|> IO.inspect()
+|> Posts.create
+|> case do
+  {:ok, post} ->
+    process_media.(post, media_array)
+    process_tags.(post, tag_array)
     end
+  {:error, changeset} ->
+    {:error, changeset}
 end)
 |> Enum.map(&IO.inspect/1)
-# |> IO.inspect()
-# end)
-|> Enum.count()
-|> IO.inspect()
-# |> Enum.reject(& &1["image"] == nil)

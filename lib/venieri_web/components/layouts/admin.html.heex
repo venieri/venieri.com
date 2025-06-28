@@ -1,51 +1,56 @@
 <Backpex.HTML.Layout.app_shell fluid={@fluid?}>
   <:topbar>
-   <div class=" text-base-content flex flex-shrink-0 flex-grow items-center space-x-2" data-phx-id="m15-phx-GCCRmJxApff58jLh">
-  
-   
-  
-    <p class="font-semibold">Venieri Admin</p>
-  
-</div>
+    <Backpex.HTML.Layout.topbar_branding />
 
-    <Backpex.HTML.Layout.topbar_dropdown>
+    <Backpex.HTML.Layout.topbar_dropdown class="mr-2 md:mr-0">
       <:label>
         <label tabindex="0" class="btn btn-square btn-ghost">
-          <.icon name="hero-user" class="h-8 w-8" />
+          <.icon name="hero-user" class="size-6" />
         </label>
       </:label>
       <li>
-        <.link navigate={~p"/"} class="flex justify-between text-red-600 hover:bg-gray-100">
+        <.link navigate={~p"/"} class="text-error flex justify-between hover:bg-base-200">
           <p>Logout</p>
-          <.icon name="hero-arrow-right-on-rectangle" class="h-5 w-5" />
+          <.icon name="hero-arrow-right-on-rectangle" class="size-5" />
         </.link>
       </li>
     </Backpex.HTML.Layout.topbar_dropdown>
   </:topbar>
   <:sidebar>
-    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/events"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Events
+    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/projects"}>
+      <.icon name="hero-book-open" class="size-5" /> Projects
     </Backpex.HTML.Layout.sidebar_item>
-      <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/media"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Media
-    </Backpex.HTML.Layout.sidebar_item>
-    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/posts"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Posts
-    </Backpex.HTML.Layout.sidebar_item>
-     <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/projects"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Projects
-    </Backpex.HTML.Layout.sidebar_item>
+  </:sidebar>
+  <:sidebar>
     <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/tags"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Tags
+      <.icon name="hero-book-open" class="size-5" /> Tags
     </Backpex.HTML.Layout.sidebar_item>
-  
+  </:sidebar>
+  <:sidebar>
+    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/media"}>
+      <.icon name="hero-book-open" class="size-5" /> Media
+    </Backpex.HTML.Layout.sidebar_item>
+  </:sidebar>
+  <:sidebar>
     <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/works"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> Works
+      <.icon name="hero-book-open" class="size-5" /> Works
     </Backpex.HTML.Layout.sidebar_item>
+  </:sidebar>
+  <:sidebar>
     <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/references"}>
-      <.icon name="hero-book-open" class="h-5 w-5" /> References
+      <.icon name="hero-book-open" class="size-5" /> References
+    </Backpex.HTML.Layout.sidebar_item>
+  </:sidebar>
+  <:sidebar>
+    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/posts"}>
+      <.icon name="hero-book-open" class="size-5" /> Posts
+    </Backpex.HTML.Layout.sidebar_item>
+  </:sidebar>
+  <:sidebar>
+    <Backpex.HTML.Layout.sidebar_item current_url={@current_url} navigate={~p"/admin/snippets"}>
+      <.icon name="hero-book-open" class="size-5" /> Snippets
     </Backpex.HTML.Layout.sidebar_item>
   </:sidebar>
   <Backpex.HTML.Layout.flash_messages flash={@flash} />
-  <%= @inner_content %>
+  {@inner_content}
 </Backpex.HTML.Layout.app_shell>

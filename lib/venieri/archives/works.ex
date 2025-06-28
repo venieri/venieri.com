@@ -56,11 +56,9 @@ defmodule Venieri.Archives.Works do
     |> Repo.insert()
   end
 
-
-
   def dup_slug?(changeset) do
     # Repo.exists?(from w in Work, where: w.slug == ^cs.changes.slug)
-    Ecto.Changeset.traverse_errors(changeset,  fn {msg, _opts} -> msg  end)
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, _opts} -> msg end)
     |> Map.has_key?(:slug)
     |> dbg()
   end
@@ -112,13 +110,35 @@ defmodule Venieri.Archives.Works do
     Work.changeset(work, attrs)
   end
 
-  def image_url(%Work{} = work, width) do
+
+  def get_media(%Work{} = work) do
     work
     |> Repo.preload(:media)
     |> then(& &1.media)
+  end
+
+  def get_media_poster(%Work{} = work) do
+    work
+    |> get_media()
     |> case do
-      [] -> ""
-      media_array -> media_array |> hd |> then(&Media.url(&1, width))
+      [] -> nil
+      media_array -> media_array |> hd
     end
   end
+
+  def is_media_poster_vertical?(%Work{} = work) do
+    work
+    |> get_media_poster()
+    |> then(&(&1.width < &1.height))
+  end
+
+  def image_url(%Work{} = work, width) do
+    work
+    |> get_media_poster()
+    |> case do
+      nil -> ""
+      media -> Media.url(media, width)
+    end
+  end
+
 end
