@@ -5,11 +5,12 @@ defmodule Venieri.MixProject do
     [
       app: :venieri,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -32,19 +33,18 @@ defmodule Venieri.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:argon2_elixir, "~> 4.1"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:phoenix, "~> 1.7.18"},
+      {:phoenix, "~> 1.8.0-rc.0", override: true},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "~> 1.0"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -52,42 +52,37 @@ defmodule Venieri.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"},
+      {:swoosh, "~> 1.16"},
+      {:req, "~> 0.5"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"}
-    ] ++ [
-      {:ex_aws, "~> 2.1.2"},
-      {:ex_aws_s3, "~> 2.0"},
-      {:backpex,  git: "https://github.com/naymspace/backpex.git"},
-      # {:backpex, path: "/Users/thanos/work/backpex"},
-      {:ecto_autoslug_field, "~> 3.1"},
-      {:exiftool, "~> 0.2.0"},
-      {:flop_phoenix, "~> 0.23.0"},
-      {:image, "~> 0.55.2"},
-      {:json_ld, "~> 0.3.9"},
-      {:live_monaco_editor, "~> 0.1"},
-      {:mogrify, "~> 0.9.3"},
-      {:oban, "~> 2.19"},
-      {:oban_web, "~> 2.11"},
-      {:phoenix_seo, "~> 0.1.11"},
-      {:snowflake, "~> 1.0.0"},
-      {:temp, "~> 0.4.9"},
-      {:ueberauth, "~> 0.10.8"},
-      {:ueberauth_microsoft, "~> 0.23.0"},
-      {:ueberauth_google, "~> 0.12.1"},
-      {:ueberauth_facebook, "~> 0.10.0"},
-      {:ueberauth_twitter, "~> 0.4.1"},
-      {:ueberauth_apple, "~> 0.6.1"},
-      {:ueberauth_linkedin, "~> 0.10.8", hex: :ueberauth_linkedin_modern},
-      {:ueberauth_github, "~> 0.8.3"},
-      {:ueberauth_identity, "~> 0.4.2"},
-  ]
-
+    ] ++
+      [
+        # {:backpex, git: "https://github.com/naymspace/backpex.git"}
+        {:backpex, "~> 0.13.0"},
+        {:ecto_autoslug_field, "~> 3.1"},
+        {:ecto_hooks, "~> 1.2"},
+        {:ex_aws_s3, "~> 2.5"},
+        {:ex_aws, "~> 2.5"},
+        {:exiftool, "~> 0.2.0"},
+        {:ffmpex, "~> 0.11.0"},
+        {:flop_phoenix, "~> 0.25.1"},
+        {:hackney, "~> 1.9"},
+        {:igniter, "~> 0.6", only: [:dev, :test]},
+        {:image, "~> 0.59.0"},
+        {:mogrify, "~> 0.9.3"},
+        {:oban_web, "~> 2.11"},
+        {:oban, "~> 2.19"},
+        {:phoenix_seo, "~> 0.1.11"},
+        # {:romanex, "~> 0.1.0"}
+        {:snowflake, "~> 1.0"},
+        {:timex, "~> 3.7"},
+        {:live_debugger, "~> 0.2.0", only: :dev}
+      ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

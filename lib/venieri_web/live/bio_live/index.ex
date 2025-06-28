@@ -1,0 +1,259 @@
+defmodule VenieriWeb.BioLive.Index do
+  use VenieriWeb, :live_view
+  require Logger
+  alias Venieri.Repo
+  alias Venieri.Archives.Projects
+  alias Venieri.Archives.Posts
+  alias Venieri.Archives.References
+
+  import VenieriWeb.Components.Navbar
+  import VenieriWeb.MediaComponents
+
+  @impl true
+  def mount(_params, _session, socket) do
+    # socket = assign(socket, page: 1)
+
+    # # on initial load it'll return false,
+    # # then true on the next.
+    # if connected?(socket) do
+    #   get_events(socket)
+    # else
+    #   socket
+    # end
+    Date.utc_today()
+
+    solo_shows =
+      Posts.by_tag("Solo Show")
+      |> Enum.group_by(& &1.post_date.year, & &1)
+      |> Enum.sort_by(&elem(&1, 0), :desc)
+
+    group_shows =
+      Posts.by_tag("Group Show")
+      |> Enum.group_by(& &1.post_date.year, & &1)
+      |> Enum.sort_by(&elem(&1, 0), :desc)
+
+    references =
+      References.list()
+      |> Enum.sort_by(& &1.publication_date, :desc)
+
+    {:ok,
+     socket
+     |> assign(:bg_color, "bg-white")
+     |> assign(solo_shows: solo_shows)
+     |> assign(group_shows: group_shows)
+     |> assign(references: references)}
+
+    # {:ok,
+    #  socket
+    #  |> assign(page: 0), temporary_assigns: [events: []]}
+  end
+
+  @impl true
+  def handle_event(_, _, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="mx-auto py-5  px-3  md:px-20">
+      <.navbar socket={@socket} />
+      <h1 class="text-2xl/7 font-bold text-gray-700 sm:truncate sm:text-3xl sm:tracking-tight pt-5">
+        BIO
+      </h1>
+      <div class="flex  flex-wrap pt-5 pb-5gap-4 md:gap-8">
+        <.media_as_picture
+          slug="lydia-venieri"
+          class="size-16 md:size-64 shadow-xlshrink-0 md:order-last mb-4"
+          size="150"
+          force_size={true}
+        />
+        <div class="md:w-3/4">
+          <p>
+            {raw(Venieri.Archives.Snippets.get_by(label: "short_bio_english").content)}
+          </p>
+          <p class="pt-10">
+            {raw(Venieri.Archives.Snippets.get_by(label: "short_bio_greek").content)}
+          </p>
+        </div>
+      </div>
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Solo Shows
+      </h2>
+
+      <ul>
+        <%= for {year, shows} <- @solo_shows  do %>
+          <li>
+            <b class="font-sans">{year} -</b>
+            <%= for show <- shows do %>
+              <a class="text-sm" href={"/events/#{show.id}"}><%= show.title %></a>,
+              <span class="font-light text-xs">{show.venue}</span>
+              <br />
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Group Shows
+      </h2>
+      <ul>
+        <%= for {year, shows} <- @group_shows  do %>
+          <li>
+            <b class="font-sans">{year} -</b>
+            <%= for show <- shows do %>
+              <a class="text-sm" href={"/events/#{show.id}"}><%= show.title %></a>,
+              <span class="font-light text-xs">{show.venue}</span>
+              <br />
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Animations and Videos
+      </h2>
+      <ul>
+        <li>Lenaki: Dyo foties kai dyo katares, director Dimitris Indares, 2024</li>
+        <li>La Vestale, 2023</li>
+        <li>Byronic Codex - a Documentary, 2022</li>
+        <li>The Siege of Corinth, 2021</li>
+        <li>The TROPARY OF KASSIANI, 2020</li>
+        <li>Metamorphoses, 2019</li>
+        <li>The Dolphin Conspiracy, 2018</li>
+        <li>Pasiphaë, 2018</li>
+        <li>The Kiss, 2015</li>
+        <li>Tomorrow, 2009</li>
+        <li>Moonlight, 2007</li>
+        <li>Forever After, 2004</li>
+        <li>Sleeping Beauty Conscience, 2002</li>
+        <li>Lullaby, 2000</li>
+        <li>Epilepsy, 2005</li>
+        <li>Martha, 1996</li>
+        <li>Egg, 1995</li>
+      </ul>
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Books and Illustrations
+      </h2>
+      <ul>
+        <li>The First Secret: a magic recipe
+          by Elina Stamatatou, illustrated by Lydia Venieri, 2014</li>
+        <li>Moonlight, Lydia Venieri, 2006</li>
+        <li>Beyond Being, Lydia Venieri, 2000</li>
+        <li>
+          Healthy Perversions by Tzimy Panousi, illustrated by Lydia Venieri, 1995
+        </li>
+      </ul>
+
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Internet Art
+      </h2>
+      <ul>
+        <li>Katerina, 1997</li>
+        <li>Apology, 1996</li>
+        <li>Isis, 1995</li>
+        <li>Her Story, 1995</li>
+        <li>Temple, 1995</li>
+        <li>Tarot, 1995</li>
+        <li>Fin, 1994</li>
+      </ul>
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Theatre
+      </h2>
+      <ul>
+        <li>GASPARE SPONTINI'S LA VESTALE,  2023</li>
+        <li>LOVE - WALTZ WITH EROS - ΒΑΛΣ ΜΕ ΤΟΝ ΈΡΩΤΑ,  2023</li>
+        <li>Scenery and costume for Mr. Love, 2015</li>
+        <li>
+          Sarah & Lorraine by Marc Israel-Le Pelletier, Storefront Theatre, 2008
+        </li>
+        <li>
+          Sarah & Lorraine by Marc Israel-Le Pelletier, Sanford Meisner Theatre, 2007
+        </li>
+        <li>
+          Lady form Ancona, Anatolia of my Soul: 75 years since the Asian Minor Catastrophy, Lykabetus Theatre, 1997
+        </li>
+        <li>The Lady from Ancona, Theatre of Komotini, 1996</li>
+        <li>Hellenic Orchestra's tour of USSR, 1996</li>
+        <li>The Five Seasons, Dance theater Octana, 1995</li>
+        <li>Daphnis & Cloe, Octana Theatrical Group, 1994</li>
+        <li>Inventaires" de Philippe Minyana, 1993</li>
+      </ul>
+
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Awards and Commissions
+      </h2>
+      <ul>
+        <li>Medal for Sculpture, Academie Francaise de Paris, 2004</li>
+        <li>Tower of Symbols, Open Air Sculpture, Central Athens, 2004</li>
+        <li>Wall of Symbols, Sculpture, Atelier Mallet Stevens, Paris</li>
+        <li>
+          Lydia on Broadway.com, CD-ROM sponsored by Art Magazine and Hewlett Packard
+        </li>
+
+        <li>“Infinity”, Collaboration with artist Takis on the sculpture.</li>
+
+        <li>
+          Commande en plein air d'une serie de sculputre Eros et Psyche, Fondation Alexandre Iolas, Athenes
+        </li>
+
+        <li>
+          Commande d'une serie de sculptures pour l'Incitation a la Creation, Abbaye de Montmajour, Arles
+        </li>
+
+        <li>
+          Carte Blanche, a l'occation de l'anniversaire de 10 ans du Centre George Pompidou, Galeries Contemporaines, Paris
+        </li>
+      </ul>
+
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Exhibition Catalogs
+      </h2>
+      <ul>
+        <li>The Dolphin Conspiracy, Nadia Argyropoulou, 2010</li>
+        <li>No Evil, Beth Wilson, 2008</li>
+        <li>Oh You beautiful Doll, Douglas F. Maxwell, 2006</li>
+        <li>For Ever After, Niko Daskalothanassi, 2005</li>
+        <li>Olympic 2004, Nelly Kyriazi, 2004</li>
+        <li>Alive in new York, Nadia Argyropoulou, 2003</li>
+        <li>Hibernation, Marek Bartelik, 2002</li>
+        <li>Propos d’Europe, Jean Guyot and Pascale le Thorel, 2002</li>
+        <li>Pandora’s Box, Women Beyond Borders, Sania Papa, 2000</li>
+        <li>Truthful and Authentic Communication, Sania Papa, 2000</li>
+        <li>Beyond Being, Lydia Venieri, 2000</li>
+        <li>Approaching Hellinism, Nelly Kyriazi, 1999</li>
+        <li>Lydia’s Cool Memories, Sania Papa, 1997</li>
+        <li>Who is Nostalgic, Nikos Dalaretos, 1999</li>
+        <li>Manifesta, 1996</li>
+        <li>Telluric Manifesto, Sania Papa, 1994</li>
+        <li>Anima Mundis, Takis, 1993</li>
+        <li>Ermata, Wanderings of the Sacred, Sania Papa, 1992</li>
+        <li>Spira, Sania Papa, 1992</li>
+        <li>Metamorphose of the Modern, Anna Kafetzi, 1991</li>
+        <li>Chimes of Time, Jacques Lacarriere, 1990</li>
+        <li>Humor ad Revolution, Cannes & Barselona, 1989</li>
+        <li>Spirit and Body, Dora Rogan, 1989</li>
+        <li>The Gods Revist, Pierrre Giquel, 1988</li>
+        <li>The Figures of Lydia, Demosthenes Davetas, Edition Agras, 1988</li>
+        <li>Lydia Venieri -FIAC 88, Nicole Kinge, 1988</li>
+        <li>Lydia Venieri, Gerard Barriere, 1988</li>
+        <li>Carte Blanche, Centre George Pompidou, 1987</li>
+      </ul>
+
+      <h2 class="pt-4 text-xl/7 font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+        Articles & References
+      </h2>
+      <ul>
+        <%= for info <- @references  do %>
+          <li>
+            <%= if info.authors  do %>
+              <span class="italic">{info.title}</span>, {info.authors}
+            <% else %>
+              <span class="italic">{info.title}</span>
+            <% end %>
+            <span class="font-medium">{info.publication}</span> {info.publication_date}
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    """
+  end
+end

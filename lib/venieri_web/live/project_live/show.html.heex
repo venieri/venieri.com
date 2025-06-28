@@ -1,0 +1,26 @@
+         <.navbar socket={@socket}/>
+ 
+  <ul role="list" class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
+    <%= for work <- @project.works do %>
+        <li class="relative">
+            <div class="group overflow-hidden rounded-lg focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+                <a href={~p"/works/#{work.id}"}>
+                    <img 
+                        class="pointer-events-none  object-cover group-hover:opacity-75"
+                        src={Venieri.Archives.Works.image_url(work, 1024)}
+                        alt={"Lydie Venieri - #{work.title}"} />
+                </a>
+            </div>
+            <p class="mt-2 block truncate text-sm font-medium text-gray-900">
+                <a href={~p"/works/#{work.id}"}>
+                    { work.title }
+                </a>
+            </p>
+            <p class="pointer-events-none block text-sm font-medium text-gray-500">{work.year}</p>
+        </li>
+    <% end %>
+</ul>
+  
+  
+  
+  

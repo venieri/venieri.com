@@ -1,0 +1,5 @@
+Venieri.Archives.Media.list()
+|> Enum.map(& &1.meta_data["metadata_date"])
+|> Enum.map(&IO.inspect/1)
+#   Regex.named_captures(~r/(?<date>\d{4}:\d{2}:\d{2})/, "2019:03:09 21:01:32-05:00")
+# end)
