@@ -11,12 +11,12 @@ defmodule VenieriWeb.VirtualWorld do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto p-3 md:px-20">
+    <div class="mx-auto p-3 px-20">
       <.navbar socket={@socket} />
 
-      <div>
+      <div class="flex items-center justify-center max-h-screen p-4">
         <%!-- <div class="flex bg-gray-200 p-4 max-w-full max-h-full overflow-auto"> --%>
-        <div class="grid grid-flow-row-dense   content-center grid-cols-3 grid-rows-3 gap-4 p-20 w-screen h-screen">
+        <div class="grid grid-flow-row-dense content-center grid-cols-3 grid-rows-3 gap-4 p-20 max-w-screen max-h-screen">
           <div class="justify-self-end">
             <a href="/virtual-world/apology/index.html">
               <img

@@ -51,6 +51,7 @@ defmodule VenieriWeb.PostLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
+     |> assign(:bg_color, "bg-white")
      |> assign(:page_title, "Listing Posts")
      |> stream(:posts, Posts.list())}
   end

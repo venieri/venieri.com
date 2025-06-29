@@ -25,6 +25,7 @@ defmodule VenieriWeb.Router do
     get "/", PageController, :home
 
     live "/bio", BioLive.Index
+    live "/posts", PostLive.Index
     live "/projects", ProjectLive.Index
     live "/virtual-world", VirtualWorld
   end

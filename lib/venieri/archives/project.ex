@@ -1,4 +1,4 @@
-defmodule Venieri.Archives.Project do
+defmodule Venieri.Archives.ProjectX do
   use Ecto.Schema
   import Ecto.Changeset
 

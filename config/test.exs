@@ -1,7 +1,5 @@
 import Config
-
-# Only in tests, remove the complexity from the password hashing algorithm
-config :argon2_elixir, t_cost: 1, m_cost: 8
+config :venieri, Oban, testing: :manual
 
 # Only in tests, remove the complexity from the password hashing algorithm
 config :bcrypt_elixir, :log_rounds, 1
@@ -23,7 +21,7 @@ config :venieri, Venieri.Repo,
 # you can enable the server option below.
 config :venieri, VenieriWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "QLYjkbf3elP5Z56V0W0+hhSVAmT4XtdIwSHZ7que1be3XL0r8eOZW7grfi6Er4N3",
+  secret_key_base: "MDk88ogRNmB91zw/orjLG2/k/8STFsUnAvJbMba21DLmtdvd661eCNPjabFFbNUb",
   server: false
 
 # In test we don't send emails
@@ -37,9 +35,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :venieri, Oban, testing: :inline
-
 
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,

@@ -9,9 +9,9 @@ defmodule VenieriWeb.Components.Navbar do
 
   def navbar(assigns) do
     ~H"""
-    <nav class="w-full">
+    <nav>
       <div class="mx-auto">
-        <div class="flex">
+        <div class="flex justify-center">
           <div class="flex">
             <div class="flex shrink-0 items-center">
               <img class="block h-5 w-auto lg:hidden" src="/images/hers016.webp" alt="Lydia Venieri" />

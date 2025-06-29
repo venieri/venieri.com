@@ -9,7 +9,7 @@ defmodule Venieri.Archives.Models.Work do
   alias Venieri.Archives.Models.WorkMedia
   alias Venieri.Archives.Models.Media
 
-  @optional_fields ~W(description medium size uploads sd_category)a
+  @optional_fields ~W(description medium size uploads sd_category project_id poster_id)a
   @required_fields ~W(show slug title year)a
 
   schema "works" do
@@ -22,7 +22,8 @@ defmodule Venieri.Archives.Models.Work do
     field(:slug, WorkSlug.Type)
     field(:year, :integer)
     field(:uploads, {:array, :string}, virtual: true)
-    # belongs_to :poster, Media
+    belongs_to :poster, Media
+    belongs_to :project, Project
 
     many_to_many(:tags, Tag, join_through: WorkTag, on_replace: :delete)
     many_to_many(:media, Media, join_through: WorkMedia, on_replace: :delete)

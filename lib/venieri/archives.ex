@@ -6,7 +6,7 @@ defmodule Venieri.Archives do
   import Ecto.Query, warn: false
   alias Venieri.Repo
 
-  alias Venieri.Archives.Project
+  alias Venieri.Archives.Models.Project
   alias Venieri.Accounts.Scope
 
   @doc """

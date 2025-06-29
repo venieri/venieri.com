@@ -18,7 +18,7 @@ defmodule Venieri.Archives.Models.Project do
 
     many_to_many :tags, Tag, join_through: ProjectTag, on_replace: :delete
     many_to_many :media, Media, join_through: ProjectMedia, on_replace: :delete
-    # has_many(:works, Work, on_replace: :nilify)
+    has_many(:works, Work, on_replace: :nilify)
 
     timestamps(type: :utc_datetime)
   end

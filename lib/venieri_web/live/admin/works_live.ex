@@ -143,6 +143,13 @@ defmodule VenieriWeb.Admin.WorksLive do
         label: "SEO Category",
         searchable: true
       },
+      project: %{
+        module: Backpex.Fields.BelongsTo,
+        label: "Project",
+        live_resource: VenieriWeb.Admin.ProjectsLive,
+        display_field: :title,
+        searchable: true
+      },
       # poster: %{
       #   module: Backpex.Fields.BelongsTo,
       #   label: "Poster",
