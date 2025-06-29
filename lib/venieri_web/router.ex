@@ -27,6 +27,7 @@ defmodule VenieriWeb.Router do
     live "/bio", BioLive.Index
     live "/posts", PostLive.Index
     live "/projects", ProjectLive.Index
+    live "/projects/:id", ProjectLive.Show
     live "/virtual-world", VirtualWorld
   end
 

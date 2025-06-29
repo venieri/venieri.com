@@ -38,13 +38,17 @@ defmodule VenieriWeb.Admin.WorksLive do
   @impl Backpex.LiveResource
   def plural_name, do: "Works"
 
-  # @impl Backpex.LiveResource
-  # def filters do
-  #   [
-  #     category_id: %{
-  #       module: VenieriWeb.Admin.Filters.ProjectFilter,
-  #       label: "Project"
-  #     },
+  @impl Backpex.LiveResource
+  def filters() do
+    [
+      category_id: %{
+        module: VenieriWeb.Admin.Filters.ProjectFilter,
+        label: "Project"
+      }
+    ]
+  end
+
+
   #     #     user_id: %{
   #     #       module: DemoWeb.Filters.PostUserMultiSelect,
   #     #       label: "Users"
