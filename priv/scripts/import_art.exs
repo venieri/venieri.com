@@ -10,34 +10,41 @@ require Logger
 
 
 
-"priv/repo/data/artworks.json"
+"/Users/thanos/work/v1/venieri.com/priv/repo/data/artworks.json"
 |> File.read!()
 |> Jason.decode!()
+# |> Enum.take(1)
 |> Enum.map(&IO.inspect/1)
 |> Enum.map(fn artwork ->
   project = Repo.get_by(Project, title: artwork["project"])
-  {:ok, art_work} = %{
+  media =
+    artwork["media"]
+    |> Enum.map(fn media_ref ->
+      Repo.get_by(Media, old_id: media_ref["id"])
+    end)
+    |> Enum.filter(& &1)
+
+  poster = List.first(media)
+  {:ok, art_work} =
+  %{
     description: artwork["description"],
-    material: artwork["medium"],
+    medium: artwork["medium"],
     project_id: (if project != nil, do: project.id, else: nil),
-    sd_type: artwork["sd_type"],
+    sd_category: artwork["sd_type"],
     size: artwork["size"],
     title: artwork["title"],
     year: artwork["year"],
+    poster_id: (if poster != nil, do: poster.id, else: nil)
   }
   |> Works.create
-  artwork["media"]
-  |> Enum.map(fn media_ref ->
-    media = Repo.get_by(Media, old_id: media_ref["id"])
-    if media != nil do
+  media
+  |> Enum.map(fn work ->
       changeset = WorkMedia.changeset(%WorkMedia{}, %{
         work_id: art_work.id,
-        media_id: media.id
+        media_id: work.id
         })
-      Repo.insert!(changeset)
-    end
+        Repo.insert!(changeset)
   end)
-
 |> IO.inspect()
 end)
 |> Enum.count()

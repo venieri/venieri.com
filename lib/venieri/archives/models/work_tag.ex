@@ -8,10 +8,9 @@ defmodule Venieri.Archives.Models.WorkTag do
   alias Venieri.Archives.Models.Work
   alias Venieri.Archives.Models.Tag
 
-
-  schema "archives_works_tags" do
-    belongs_to :work, Work
-    belongs_to :tag, Tag
+  schema "works_tags" do
+    belongs_to(:work, Work)
+    belongs_to(:tag, Tag)
 
     timestamps()
   end

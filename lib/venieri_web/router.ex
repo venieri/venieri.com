@@ -1,9 +1,9 @@
 defmodule VenieriWeb.Router do
   use VenieriWeb, :router
 
+  import Oban.Web.Router
   import VenieriWeb.UserAuth
   import Backpex.Router
-  import Oban.Web.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -12,8 +12,7 @@ defmodule VenieriWeb.Router do
     plug :put_root_layout, html: {VenieriWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :fetch_current_user
-
+    plug :fetch_current_scope_for_user
   end
 
   pipeline :api do
@@ -23,22 +22,32 @@ defmodule VenieriWeb.Router do
   scope "/", VenieriWeb do
     pipe_through :browser
 
-    live "/", EventList
-    # live "/", Archive.EventList
-    # get "/", PageController, :events
-    live "/bio", BioLive
-    live "/projects", ProjectsLive
-    get "/projects/:id", PageController, :project
-    get "/events", PageController, :events
-    get "/events/:id", PageController, :event
-    get "/virtual-world", PageController, :virtual_world
+    get "/", PageController, :home
 
+    live "/bio", BioLive.Index
+    live "/posts", PostLive.Index
+    live "/projects", ProjectLive.Index
+    live "/virtual-world", VirtualWorld
+  end
 
-    resources "/archives/references", ReferenceController
-    get "/test", PageController, :test
-    # get "/", PageController, :home
+  scope "/admin", VenieriWeb.Admin do
+    pipe_through :browser
 
-     oban_dashboard "/oban"
+    # add this line
+    backpex_routes()
+
+    get "/", RedirectController, :redirect_to_posts
+
+    live_session :default, on_mount: Backpex.InitAssigns do
+      # add this line
+      live_resources "/media", MediaLive
+      live_resources "/projects", ProjectsLive
+      live_resources "/tags", TagsLive
+      live_resources "/works", WorksLive
+      live_resources "/posts", PostsLive
+      live_resources "/references", ReferencesLive
+      live_resources "/snippets", SnippetsLive
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -61,104 +70,39 @@ defmodule VenieriWeb.Router do
       live_dashboard "/dashboard", metrics: VenieriWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
-  end
 
-  scope "/admin", VenieriWeb do
-    pipe_through :browser
+    scope "/" do
+      pipe_through :browser
 
-    # add this line
-    backpex_routes()
-
-    # get "/", RedirectController, :redirect_to_posts
-
-    live_session :default, on_mount: Backpex.InitAssigns do
-        live_resources "/posts", AdminPostLive
-        live_resources "/projects", AdminProjectLive
-        live_resources "/tags", AdminTagLive
-        live_resources "/works", AdminWorkLive
-        live_resources "/media", AdminMediaLive
-        live_resources "/events", AdminEventLive
-        live_resources "/references", AdminReferenceLive
+      oban_dashboard("/oban")
     end
   end
 
   ## Authentication routes
 
   scope "/", VenieriWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
-
-    live_session :redirect_if_user_is_authenticated,
-      on_mount: [{VenieriWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/log_in", UserLoginLive, :new
-      live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
-    end
-
-    post "/users/log_in", UserSessionController, :create
-  end
-
-  scope "/", VenieriWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-
-
     live_session :require_authenticated_user,
-      on_mount: [{VenieriWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-
-
-      live "/archives/tags", Archives.TagLive.Index, :index
-      live "/archives/tags/new", Archives.TagLive.Index, :new
-      live "/archives/tags/:id/edit", Archives.TagLive.Index, :edit
-      live "/archives/tags/:id", Archives.TagLive.Show, :show
-      live "/archives/tags/:id/show/edit", Archives.TagLive.Show, :edit
-
-      live "/archives/projects", Archives.ProjectLive.Index, :index
-      live "/archives/projects/new", Archives.ProjectLive.Index, :new
-      live "/archives/projects/:id/edit", Archives.ProjectLive.Index, :edit
-      live "/archives/projects/:id", Archives.ProjectLive.Show, :show
-      live "/archives/projects/:id/show/edit", Archives.ProjectLive.Show, :edit
-
-
-      live "/archives/works", Archives.WorkLive.Index, :index
-      live "/archives/works/new", Archives.WorkLive.Index, :new
-      live "/archives/works/:id/edit", Archives.WorkLive.Index, :edit
-      live "/archives/works/:id", Archives.WorkLive.Show, :show
-      live "/archives/works/:id/show/edit", Archives.WorkLive.Show, :edit
-
-      # live "/archives/events", Archives.EventLive.Index, :index
-      live "/archives/events/new", Archives.EventLive.Index, :new
-      live "/archives/events/:id/edit", Archives.EventLive.Index, :edit
-      live "/archives/events/:id", Archives.EventLive.Show, :show
-      live "/archives/events/:id/show/edit", Archives.EventLive.Show, :edit
-
-
-      live "/archives/media", Archives.MediaLive.Index, :index
-      live "/archives/media/new", Archives.MediaLive.Index, :new
-      live "/archives/media/:id/edit", Archives.MediaLive.Index, :edit
-      live "/archives/media/:id", Archives.MediaLive.Show, :show
-      live "/archives/media/:id/show/edit", Archives.MediaLive.Show, :edit
-
-
-
+      on_mount: [{VenieriWeb.UserAuth, :require_authenticated}] do
+      live "/users/settings", UserLive.Settings, :edit
+      live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
+
+    post "/users/update-password", UserSessionController, :update_password
   end
 
   scope "/", VenieriWeb do
     pipe_through [:browser]
 
-    delete "/users/log_out", UserSessionController, :delete
-
     live_session :current_user,
-      on_mount: [{VenieriWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
+      on_mount: [{VenieriWeb.UserAuth, :mount_current_scope}] do
+      live "/users/register", UserLive.Registration, :new
+      live "/users/log-in", UserLive.Login, :new
+      live "/users/log-in/:token", UserLive.Confirmation, :new
     end
+
+    post "/users/log-in", UserSessionController, :create
+    delete "/users/log-out", UserSessionController, :delete
   end
-
-
-
-
 end

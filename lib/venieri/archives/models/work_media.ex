@@ -8,10 +8,9 @@ defmodule Venieri.Archives.Models.WorkMedia do
   alias Venieri.Archives.Models.Work
   alias Venieri.Archives.Models.Media
 
-
-  schema "archives_works_media" do
-    belongs_to :work, Work
-    belongs_to :media, Media
+  schema "works_media" do
+    belongs_to(:work, Work)
+    belongs_to(:media, Media)
 
     timestamps()
   end

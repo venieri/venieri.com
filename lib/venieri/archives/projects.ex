@@ -8,6 +8,7 @@ defmodule Venieri.Archives.Projects do
 
   alias Venieri.Archives.Models.Project
   alias Venieri.Archives.Works
+
   @doc """
   Returns the list of projects.
 
@@ -102,7 +103,6 @@ defmodule Venieri.Archives.Projects do
     Project.changeset(project, attrs)
   end
 
-
   def get_artworks(%Project{} = project) do
     project
     |> Repo.preload(:works)
@@ -117,7 +117,6 @@ defmodule Venieri.Archives.Projects do
       works_array -> works_array |> hd
     end
   end
-
 
   def image_url(%Project{} = project, width) do
     project

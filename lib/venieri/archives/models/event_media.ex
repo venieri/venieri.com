@@ -8,10 +8,9 @@ defmodule Venieri.Archives.Models.EventMedia do
   alias Venieri.Archives.Models.Event
   alias Venieri.Archives.Models.Media
 
-
   schema "archives_events_media" do
-    belongs_to :event, Event
-    belongs_to :media, Media
+    belongs_to(:event, Event)
+    belongs_to(:media, Media)
 
     timestamps()
   end

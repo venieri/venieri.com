@@ -17,7 +17,17 @@ defmodule Venieri.Archives.Events do
       [%Event{}, ...]
 
   """
-  def list do
+  def list(opts) do
+    [paging: [offset: offset, limit: limit]] = Keyword.validate!(opts, [paging: [offset: 0, limit: 10]])
+    Event
+    |> where([e], e.show == true)
+    |> order_by([e], [desc: e.start_date])
+    |> limit([_], ^limit)
+    |> offset([_], ^offset)
+    |> Repo.all
+  end
+
+  def list() do
     Repo.all(Event)
   end
 
@@ -109,9 +119,9 @@ defmodule Venieri.Archives.Events do
       Repo.get_by(Venieri.Archives.Models.Tag, label: tag)
       |> Repo.preload(:events)
       |> then(& &1.events)
-      |> Enum.map(& Repo.preload(&1, :media))
-      |> Enum.group_by(& VenieriWeb.Components.Helpers.fmt_year(&1.start_date), & &1)
-      |> Enum.sort_by(& elem(&1,0), :desc)
+      |> Enum.map(&Repo.preload(&1, :media))
+      |> Enum.group_by(&VenieriWeb.Components.Helpers.fmt_year(&1.start_date), & &1)
+      |> Enum.sort_by(&elem(&1, 0), :desc)
   end
 
   def get_media(%Event{} = event) do
@@ -132,7 +142,7 @@ defmodule Venieri.Archives.Events do
   def is_media_poster_horizontal?(%Event{} = event) do
     event
     |> get_media_poster()
-    |> then(& &1.width >= &1.height)
+    |> then(&(&1.width >= &1.height))
   end
 
   def image_url(%Event{} = event, width) do
@@ -140,7 +150,7 @@ defmodule Venieri.Archives.Events do
     |> get_media_poster()
     |> case do
       nil -> ""
-      media -> media.slug <>"-#{width}.avif"
+      media -> media.slug <> "-#{width}.avif"
     end
   end
 end

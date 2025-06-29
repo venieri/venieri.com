@@ -5,7 +5,7 @@ config :venieri, Venieri.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "venieri_dev",
+  database: "venieri_v2_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -23,7 +23,7 @@ config :venieri, VenieriWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "QT2gMNFU8pXRvpvXAKjrt9SwD+9BU4g2dkGHaszxTromJkjA0Tl4OePUgzYUfUdt",
+  secret_key_base: "lEh1GOiHqp2oPn8l87mJU88aKXgRJb5XQZOqWaBXys3GNzRlfJyXljHAw9oO2qiL",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:venieri, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:venieri, ~w(--watch)]}
@@ -55,6 +55,7 @@ config :venieri, VenieriWeb.Endpoint,
 # Watch static and templates for browser reloading.
 config :venieri, VenieriWeb.Endpoint,
   live_reload: [
+    web_console_logger: true,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
@@ -66,7 +67,7 @@ config :venieri, VenieriWeb.Endpoint,
 config :venieri, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :default_formatter, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
@@ -76,7 +77,8 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :phoenix_live_view,
-  # Include HEEx debug annotations as HTML comments in rendered markup
+  # Include HEEx debug annotations as HTML comments in rendered markup.
+  # Changing this configuration will require mix clean and a full recompile.
   debug_heex_annotations: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true

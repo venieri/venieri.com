@@ -13,8 +13,6 @@ defmodule Venieri.Application do
       {Oban, Application.fetch_env!(:venieri, Oban)},
       {DNSCluster, query: Application.get_env(:venieri, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Venieri.PubSub},
-      # Start the Finch HTTP client for sending emails
-      {Finch, name: Venieri.Finch},
       # Start a worker by calling: Venieri.Worker.start_link(arg)
       # {Venieri.Worker, arg},
       # Start to serve requests, typically the last entry
