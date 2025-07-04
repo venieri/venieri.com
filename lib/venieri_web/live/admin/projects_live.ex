@@ -28,7 +28,7 @@ defmodule VenieriWeb.Admin.ProjectsLive do
   @impl Backpex.LiveResource
   def fields do
     [
-      id: %{
+    id: %{
         module: Backpex.Fields.Text,
         label: "ID",
         readonly: true
