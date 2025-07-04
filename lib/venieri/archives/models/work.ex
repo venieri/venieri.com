@@ -9,14 +9,14 @@ defmodule Venieri.Archives.Models.Work do
   alias Venieri.Archives.Models.WorkMedia
   alias Venieri.Archives.Models.Media
 
-  @optional_fields ~W(description medium size uploads sd_category project_id poster_id)a
+  @optional_fields ~W(description medium size uploads project_id poster_id)a
   @required_fields ~W(show slug title year)a
 
   schema "works" do
     field(:title, :string)
     field(:description, :string)
     field(:medium, :string)
-    field(:sd_category, :string)
+    # field(:sd_category, :string)
     field(:show, :boolean, default: true)
     field(:size, :string)
     field(:slug, WorkSlug.Type)

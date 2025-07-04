@@ -38,13 +38,17 @@ defmodule VenieriWeb.Admin.WorksLive do
   @impl Backpex.LiveResource
   def plural_name, do: "Works"
 
-  # @impl Backpex.LiveResource
-  # def filters do
-  #   [
-  #     category_id: %{
-  #       module: VenieriWeb.Admin.Filters.ProjectFilter,
-  #       label: "Project"
-  #     },
+  @impl Backpex.LiveResource
+  def filters() do
+    [
+      category_id: %{
+        module: VenieriWeb.Admin.Filters.ProjectFilter,
+        label: "Project"
+      }
+    ]
+  end
+
+
   #     #     user_id: %{
   #     #       module: DemoWeb.Filters.PostUserMultiSelect,
   #     #       label: "Users"
@@ -138,17 +142,16 @@ defmodule VenieriWeb.Admin.WorksLive do
         label: "Title",
         searchable: true
       },
-      sd_category: %{
-        module: Backpex.Fields.Text,
-        label: "SEO Category",
-        searchable: true
-      },
+      # sd_category: %{
+      #   module: Backpex.Fields.Text,
+      #   label: "SEO Category",
+      #   searchable: true
+      # },
       project: %{
         module: Backpex.Fields.BelongsTo,
         label: "Project",
         live_resource: VenieriWeb.Admin.ProjectsLive,
-        display_field: :title,
-        searchable: true
+        display_field: :title
       },
       # poster: %{
       #   module: Backpex.Fields.BelongsTo,
