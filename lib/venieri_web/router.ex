@@ -22,8 +22,9 @@ defmodule VenieriWeb.Router do
   scope "/", VenieriWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    # get "/", PageController, :home
 
+    live "/", PostLive.Index
     live "/bio", BioLive.Index
     live "/posts", PostLive.Index
     live "/projects", ProjectLive.Index

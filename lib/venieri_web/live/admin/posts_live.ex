@@ -38,13 +38,24 @@ defmodule VenieriWeb.Admin.PostsLive do
   @impl Backpex.LiveResource
   def fields do
     [
+      to_show: %{
+        module: Backpex.Fields.Boolean,
+        label: "Visible",
+        align: :center,
+        index_editable: true
+      },
+      post_date: %{
+        module: Backpex.Fields.Date,
+        label: "Date"
+      },
       title: %{
         module: Backpex.Fields.Text,
         label: "Title"
       },
       slug: %{
         module: Backpex.Fields.Text,
-        label: "Slug"
+        label: "Slug",
+        except: [:index],
       },
       type: %{
         module: Backpex.Fields.Select,
@@ -53,11 +64,8 @@ defmodule VenieriWeb.Admin.PostsLive do
       },
       logline: %{
         module: Backpex.Fields.Textarea,
-        label: "Leader"
-      },
-      post_date: %{
-        module: Backpex.Fields.Date,
-        label: "Date"
+        label: "Leader",
+        except: [:index],
       },
       orientation: %{
         module: Backpex.Fields.Select,
@@ -68,12 +76,6 @@ defmodule VenieriWeb.Admin.PostsLive do
           {:left, "Left"},
           {:right, "Right"}
         ]
-      },
-      to_show: %{
-        module: Backpex.Fields.Boolean,
-        label: "Visible",
-        align: :center,
-        index_editable: true
       },
       description: %{
         module: Backpex.Fields.Textarea,
@@ -101,25 +103,30 @@ defmodule VenieriWeb.Admin.PostsLive do
       location_url: %{
         module: Backpex.Fields.Text,
         label: "Location Url",
-        panel: :event
+        panel: :event,
+        except: [:index],
       },
       start_date: %{
         module: Backpex.Fields.DateTime,
         label: "Start",
-        panel: :event
+        panel: :event,
+        except: [:index],
       },
       end_date: %{
         module: Backpex.Fields.DateTime,
         label: "End",
-        panel: :event
+        panel: :event,
+        except: [:index],
       },
       event_url: %{
         module: Backpex.Fields.Text,
         label: "event_url",
-        panel: :event
+        panel: :event,
+        except: [:index],
       },
       press_release: %{
         module: Backpex.Fields.Upload,
+        except: [:index],
         label: "Press Release",
         panel: :event,
         upload_key: :press_release,
@@ -141,6 +148,7 @@ defmodule VenieriWeb.Admin.PostsLive do
       },
       media: %{
         module: Backpex.Fields.Many,
+        except: [:index],
         label: "Media",
         orderable: true,
         searchable: true,
@@ -162,6 +170,7 @@ defmodule VenieriWeb.Admin.PostsLive do
         options_query: &Venieri.Archives.Media.select_media/2
       },
       tags: %{
+        except: [:index],
         module: Backpex.Fields.HasMany,
         label: "Tags",
         orderable: false,
@@ -173,7 +182,8 @@ defmodule VenieriWeb.Admin.PostsLive do
   end
 
   defp list_existing_files(%{press_release: press_release} = _item)
-       when press_release != "" and not is_nil(press_release), do: [press_release]
+       when press_release != "" and not is_nil(press_release),
+       do: [press_release]
 
   defp list_existing_files(_item), do: []
 

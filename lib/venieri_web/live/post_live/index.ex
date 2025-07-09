@@ -2,50 +2,14 @@ defmodule VenieriWeb.PostLive.Index do
   use VenieriWeb, :live_view
 
   alias Venieri.Archives.Posts
+  alias Venieri.Archives.Models.Post
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <Layouts.app flash={@flash}>
-      <.header>
-        Listing Posts
-        <:actions>
-          <.button variant="primary" navigate={~p"/posts/new"}>
-            <.icon name="hero-plus" /> New Post
-          </.button>
-        </:actions>
-      </.header>
+  import Ecto.Query, only: [from: 2]
 
-      <.table
-        id="posts"
-        rows={@streams.posts}
-        row_click={fn {_id, post} -> JS.navigate(~p"/posts/#{post}") end}
-      >
-        <:col :let={{_id, post}} label="Title">{post.title}</:col>
-        <:col :let={{_id, post}} label="Slug">{post.slug}</:col>
-        <:col :let={{_id, post}} label="Logline">{post.logline}</:col>
-        <:col :let={{_id, post}} label="Description">{post.description}</:col>
-        <:col :let={{_id, post}} label="Post date">{post.post_date}</:col>
-        <:col :let={{_id, post}} label="To show">{post.to_show}</:col>
-        <:col :let={{_id, post}} label="Orientation">{post.orientation}</:col>
-        <:action :let={{_id, post}}>
-          <div class="sr-only">
-            <.link navigate={~p"/posts/#{post}"}>Show</.link>
-          </div>
-          <.link navigate={~p"/posts/#{post}/edit"}>Edit</.link>
-        </:action>
-        <:action :let={{id, post}}>
-          <.link
-            phx-click={JS.push("delete", value: %{id: post.id}) |> hide("##{id}")}
-            data-confirm="Are you sure?"
-          >
-            Delete
-          </.link>
-        </:action>
-      </.table>
-    </Layouts.app>
-    """
-  end
+  alias Venieri.Repo
+
+  import VenieriWeb.Components.Navbar
+
 
   @impl true
   def mount(_params, _session, socket) do
@@ -53,7 +17,45 @@ defmodule VenieriWeb.PostLive.Index do
      socket
      |> assign(:bg_color, "bg-white")
      |> assign(:page_title, "Listing Posts")
-     |> stream(:posts, Posts.list())}
+     |> assign(page: 1, per_page: 20)
+     |> paginate_posts(1)}
+  end
+
+  defp paginate_posts(socket, new_page) when new_page >= 1 do
+    %{per_page: per_page, page: cur_page} = socket.assigns
+    posts = get_posts(offset: (new_page - 1) * per_page, limit: per_page)
+
+    {posts, at, limit} =
+      if new_page >= cur_page do
+        {posts, -1, per_page * 3 * -1}
+      else
+        {Enum.reverse(posts), 0, per_page * 3}
+      end
+
+    case posts do
+      [] ->
+        assign(socket, end_of_timeline?: at == -1)
+
+      [_ | _] = posts ->
+        socket
+        |> assign(end_of_timeline?: false)
+        |> assign(:page, new_page)
+        |> stream(:posts, posts, at: at, limit: limit)
+    end
+  end
+
+  def get_posts(options) do
+    offset = Keyword.get(options, :offset, 0)
+    limit = Keyword.get(options, :limit, 20)
+
+    query =
+    (from p in Post,
+    where: p.to_show == true,
+    order_by: [desc: p.post_date],
+    preload: [:media],
+    offset: ^offset,
+    limit: ^limit)
+    |> Repo.all()
   end
 
   @impl true
@@ -62,5 +64,21 @@ defmodule VenieriWeb.PostLive.Index do
     {:ok, _} = Posts.delete(post)
 
     {:noreply, stream_delete(socket, :posts, post)}
+  end
+
+  def handle_event("next-page", _, socket) do
+    {:noreply, paginate_posts(socket, socket.assigns.page + 1)}
+  end
+
+  def handle_event("prev-page", %{"_overran" => true}, socket) do
+    {:noreply, paginate_posts(socket, 1)}
+  end
+
+  def handle_event("prev-page", _, socket) do
+    if socket.assigns.page > 1 do
+      {:noreply, paginate_posts(socket, socket.assigns.page - 1)}
+    else
+      {:noreply, socket}
+    end
   end
 end
