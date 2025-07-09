@@ -3,6 +3,8 @@ defmodule Venieri.Archives.Posts do
 
   alias Venieri.Repo
 
+  alias Venieri.Archives.Media
+
   @doc """
   Returns the list of posts.
 
@@ -115,6 +117,14 @@ defmodule Venieri.Archives.Posts do
       |> Repo.preload(:posts)
       |> then(& &1.posts)
       |> Enum.map(&Repo.preload(&1, :media))
+  end
+
+  def image_url(%Post{} = post, width) do
+    post.media
+    |> case do
+      [] -> ""
+      media -> Media.url(media |> hd)
+    end
   end
 
   # |> Enum.group_by(&VenieriWeb.Components.Helpers.fmt_year(&1.start_date), & &1)
