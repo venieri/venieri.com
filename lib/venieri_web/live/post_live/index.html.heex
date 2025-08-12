@@ -13,19 +13,22 @@
   ]}>
 
         <div class="card card-xl bg-base-100 shadow-sm flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>
+        <a name={post.slug} />
             <div class="card-body">
-                <h2 class="card-title">{post.title}</h2>
-                
+                <h2 class="card-title">   
+                    <a  href={"/posts/#{post.slug}"}>{post.title}</a>
+                </h2>
+    
                 <div class="text-xs uppercase font-semibold opacity-60">{post.post_date}</div>
                 <div class="text-xs uppercase font-semibold opacity-60">{post.venue}</div>
                 <p>{raw post.logline}</p>
             </div>
         
             <figure >
-                    <a  href={"/posts/#{post.id}"}>
+                    <a  href={"/posts/#{post.slug}"}>
                         <img 
                    
-                        src={Venieri.Archives.Posts.image_url(post, 480)} 
+                        src={Venieri.Archives.Posts.image_url(post, width: 1024)} 
                         alt="" />
 
                 </a>
