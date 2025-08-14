@@ -1,0 +1,37 @@
+<div class="mx-auto max-w-4xl max-h-dvh py-5  px-3  md:px-20">
+    <.navbar socket={@socket} />
+
+
+    <.header class="mt-4 md:mt-16">
+ {@work.title}
+    </.header>
+
+ 
+
+<%= if (@work.media |> Enum.count() > 1) do %>
+ <%= for media <- @work.media do %>
+      <img src={Venieri.Archives.Media.url(media, width: 1024)} alt={media.caption} />
+ <% end %>
+  <% else %>
+  <figure >
+    <img  class="max-h-[800px]" src={Venieri.Archives.Media.url(@work.media |> hd, width: 1024)} alt={(@work.media |> hd).caption} />
+  <figcaption> <p class="text-sm font-semibold text-gray-800">{@work.title} </p>
+  <span class="text-sm text-gray-500">{@work.year}</span><br />
+  <span class="text-sm text-gray-500">{ [@work.size, @work.medium] 
+  |> Enum.reject(&is_nil/1) |> Enum.join(", ") }</span><br />
+  </figcaption>
+</figure>
+  <% end %>
+
+ 
+   
+
+
+
+    <div class="pt-4 pb-4 md:pt-4 md:pb-16">
+        <p>{description(@work)}</p>
+    </div>
+</div>
+
+     
+ 

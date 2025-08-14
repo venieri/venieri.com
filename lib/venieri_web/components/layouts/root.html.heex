@@ -28,8 +28,9 @@
       })();
     </script>
   </head>
-  <body class={assigns[:bg_color]}>
-    
+  <body class={[assigns[:bg_color], "mx-auto max-h-dvh py-1 px-3  md:px-20"]}>
+  <.navbar />
+  
     {@inner_content}
   </body>
 </html>

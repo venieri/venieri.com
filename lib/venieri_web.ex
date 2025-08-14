@@ -52,7 +52,7 @@ defmodule VenieriWeb do
   def live_view do
     quote do
       use Phoenix.LiveView
-
+      import VenieriWeb.Components.Navbar
       unquote(html_helpers())
     end
   end

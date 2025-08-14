@@ -41,7 +41,7 @@ defmodule VenieriWeb.Admin.WorksLive do
   @impl Backpex.LiveResource
   def filters() do
     [
-      category_id: %{
+      project_id: %{
         module: VenieriWeb.Admin.Filters.ProjectFilter,
         label: "Project"
       }
@@ -201,17 +201,19 @@ defmodule VenieriWeb.Admin.WorksLive do
       },
       medium: %{
         module: Backpex.Fields.Text,
-        label: "Media"
+        label: "Medium",
+        index_editable: true
       },
       size: %{
         module: Backpex.Fields.Text,
-        label: "Size"
+        label: "Size",
+        index_editable: true
       },
       description: %{
         module: Backpex.Fields.Textarea,
         label: "Description",
         rows: 10,
-        except: [:index],
+        # except: [:index],
         render: fn assigns ->
           ~H'''
           <div>

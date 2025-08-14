@@ -1,10 +1,8 @@
-         <.navbar socket={@socket}/>
- 
   <ul role="list" class="p-2 lg:p-5 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
     <%= for work <- @project.works do %>
         <li class="relative">
             <div class="group overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-                <a href={~p"/works/#{work.id}"}>
+                <a href={~p"/works/#{work.slug}"}>
                     <img 
                         class="pointer-events-none  object-cover group-hover:opacity-75"
                         src={Venieri.Archives.Works.image_url(work, width: 1024)}

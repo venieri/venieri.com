@@ -10,7 +10,6 @@ defmodule VenieriWeb.MediaLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-
 <.navbar socket={@socket} />
 
     <figure class="flex flex-col items-center justify-center pt-4 pb-8">

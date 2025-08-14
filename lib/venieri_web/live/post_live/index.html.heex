@@ -1,6 +1,5 @@
 
-<div class="mx-auto max-w-4xl max-h-dvh py-5  px-3  md:px-20">
-    <.navbar socket={@socket} />
+
     <div
   id="posts"
   phx-update="stream"
@@ -12,7 +11,7 @@
     if(@page == 1, do: "pt-10", else: "pt-[calc(200vh)]")
   ]}>
 
-        <div class="card card-xl bg-base-100 shadow-sm flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>
+        <div class="card card-xl  flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>
         <a name={post.slug} />
             <div class="card-body">
                 <h2 class="card-title">   
@@ -38,7 +37,7 @@
     <div :if={@end_of_timeline?} class="mt-5 text-[50px] text-center">
      
     </div>
-</div>
+
 
 
      

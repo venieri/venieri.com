@@ -22,7 +22,7 @@ defmodule VenieriWeb.PostLive.Index do
   end
 
   defp paginate_posts(socket, new_page) when new_page >= 1 do
-    %{per_page: per_page, page: cur_page} = socket.assigns
+    %{per_page: per_page, page: cur_page} = socket.assigns |> dbg()
     posts = get_posts(offset: (new_page - 1) * per_page, limit: per_page)
 
     {posts, at, limit} =

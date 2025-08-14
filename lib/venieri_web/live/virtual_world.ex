@@ -12,7 +12,6 @@ defmodule VenieriWeb.VirtualWorld do
   def render(assigns) do
     ~H"""
     <div class="mx-auto p-3 px-20">
-      <.navbar socket={@socket} />
 
       <div class="flex items-center justify-center max-h-screen p-4">
         <%!-- <div class="flex bg-gray-200 p-4 max-w-full max-h-full overflow-auto"> --%>
