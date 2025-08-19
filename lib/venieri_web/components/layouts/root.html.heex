@@ -29,8 +29,10 @@
     </script>
   </head>
   <body class={[assigns[:bg_color], "mx-auto max-h-dvh py-1 px-3  md:px-20"]}>
-  <.navbar />
-  
+  <div class={["mx-auto", assigns[:max_width] || "max-w-4xl"]}>
+  <.navbar_left view={assigns[:view]} />
+
     {@inner_content}
+  </div>
   </body>
 </html>

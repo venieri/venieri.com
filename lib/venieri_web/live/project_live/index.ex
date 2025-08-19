@@ -25,7 +25,9 @@ defmodule VenieriWeb.ProjectLive.Index do
 
     {:ok,
      socket
-     |> assign(projects: projects)}
+     |> assign(view: :projects)
+     |> assign(projects: projects)
+  }
 
     # {:ok,
     #  socket

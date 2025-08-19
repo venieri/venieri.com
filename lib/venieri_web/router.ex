@@ -22,6 +22,7 @@ defmodule VenieriWeb.Router do
   scope "/", VenieriWeb do
     pipe_through :browser
 
+    get "/test", PageController, :test
     get "/media/export/:slug", MediaController, :export
 
     live "/media", MediaLive.Index

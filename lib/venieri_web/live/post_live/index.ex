@@ -18,7 +18,8 @@ defmodule VenieriWeb.PostLive.Index do
      |> assign(:bg_color, "bg-white")
      |> assign(:page_title, "Listing Posts")
      |> assign(page: 1, per_page: 20)
-     |> paginate_posts(1)}
+     |> paginate_posts(1)
+     |> assign(view: :events)}
   end
 
   defp paginate_posts(socket, new_page) when new_page >= 1 do

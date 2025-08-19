@@ -1,4 +1,6 @@
-
+  <h1 class="text-2xl/7 font-bold text-gray-700 sm:truncate sm:text-3xl sm:tracking-tight pt-3 hidden print:block">
+    LYDIA VENIERI
+    </h1>
 
     <div
   id="posts"
@@ -7,8 +9,8 @@
   phx-viewport-bottom={!@end_of_timeline? && JS.push("next-page", page_loading: true)}
   class={[
 
-    if(@end_of_timeline?, do: "pb-10", else: "pb-[calc(200vh)]"),
-    if(@page == 1, do: "pt-10", else: "pt-[calc(200vh)]")
+    if(@end_of_timeline?, do: "pb-3", else: "pb-[calc(200vh)]"),
+    if(@page == 1, do: "pt-3", else: "pt-[calc(200vh)]")
   ]}>
 
         <div class="card card-xl  flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>

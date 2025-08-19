@@ -42,6 +42,30 @@ defmodule VenieriWeb.Components.Navbar do
 """
   end
 
+  def navbar_left(assigns) do
+
+    ~H"""
+     <div
+     class={["print:hidden", "navbar flex", (if assigns[:view] == :virtual_world, do: "text-white", else: "text-black")]}
+  >
+     <img class="h-5 md:h-16 w-auto lg:block" src="/images/hers016.webp" alt="Lydia Venieri" />
+    <ul class="menu menu-horizontal px-1 font-sans font-stretch-condensed md:font-stretch-normal text-xs  md:font-normal md:text-base">
+      <li><a  href="/" class={if assigns[:view] == :events, do: "font-bold text-red-500", else: ""}>LYDIA VENIERI</a></li>
+      <li><a  href="/bio" class={if assigns[:view] == :bio, do: "font-bold text-red-500", else: ""}>BIO</a></li>
+      <li><a
+        href="/projects"  class={if assigns[:view] == :projects, do: "font-bold text-red-500", else: ""}>PROJECTS</a></li>
+      <li><a  href="/virtual-world" class={if assigns[:view] == :virtual_world, do: "font-bold text-red-500", else: ""}>VIRTUAL WORLD</a></li>
+    </ul>
+  </div>
+    """
+  end
+
+
+
+
+
+
+
   def navbar(assigns) do
     ~H"""
   <div class="navbar">
