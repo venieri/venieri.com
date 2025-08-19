@@ -36,6 +36,8 @@ defmodule Venieri.Archives.Posts do
   """
   def get!(id), do: Repo.get!(Post, id)
 
+  def get_by(condition), do: Repo.get_by(Post, condition)
+
   @doc """
   Creates a post.
 
@@ -119,13 +121,17 @@ defmodule Venieri.Archives.Posts do
       |> Enum.map(&Repo.preload(&1, :media))
   end
 
-  def image_url(%Post{} = post, width) do
+  def image_url(%Post{} = post, options \\ []) do
+    width = Keyword.get(options, :width, 480)
+    index = Keyword.get(options, :index, 0)
     post.media
     |> case do
       [] -> ""
-      media -> Media.url(media |> hd)
+      media -> Media.url(media |> Enum.at(index))
     end
   end
+
+
 
   # |> Enum.group_by(&VenieriWeb.Components.Helpers.fmt_year(&1.start_date), & &1)
   # |> Enum.sort_by(&elem(&1, 0), :desc)

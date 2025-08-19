@@ -6,6 +6,12 @@ const fs = require("fs")
 const path = require("path")
 const colors = require('tailwindcss/colors')
 module.exports = {
+  variants: {
+    extend: {
+      display: ['print'],
+      textColor: ['print'],
+      // Add other utilities you want to enable for print here
+    },
   daisyui: {
     themes: [
       {

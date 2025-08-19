@@ -1,0 +1,27 @@
+
+<div class="mx-auto max-w-4xl max-h-dvh py-5  px-3  md:px-20">
+    <div
+  id="media"
+  phx-update="stream"
+  phx-viewport-top={@page > 1 && JS.push("prev-page", page_loading: true)}
+  phx-viewport-bottom={!@end_of_timeline? && JS.push("next-page", page_loading: true)}
+  class={[
+
+    if(@end_of_timeline?, do: "pb-10", else: "pb-[calc(200vh)]"),
+    if(@page == 1, do: "pt-10", else: "pt-[calc(200vh)]")
+  ]}>
+<ul class="flex flex-wrap gap-1">
+<li class="p-1 h-[175px] grow last:grow-0" :for={{id, media} <- @streams.media } id={id} >
+<img class="h-full w-full object-fill"
+src={Venieri.Archives.Media.url(media, width: 1024)} alt={media.caption} />
+</li>
+
+</ul>
+    <div :if={@end_of_timeline?} class="mt-5 text-[50px] text-center">
+     
+    </div>
+</div>
+</div>
+
+     
+ 

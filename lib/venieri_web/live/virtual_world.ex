@@ -6,17 +6,16 @@ defmodule VenieriWeb.VirtualWorld do
   import VenieriWeb.Components.Navbar
 
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:bg_color, "bg-black")}
+    {:ok, socket |> assign(:bg_color, "bg-black") |> assign(view: :virtual_world)}
   end
 
   def render(assigns) do
     ~H"""
     <div class="mx-auto p-3 px-20">
-      <.navbar socket={@socket} />
 
       <div class="flex items-center justify-center max-h-screen p-4">
         <%!-- <div class="flex bg-gray-200 p-4 max-w-full max-h-full overflow-auto"> --%>
-        <div class="grid grid-flow-row-dense content-center grid-cols-3 grid-rows-3 gap-4 p-20 max-w-screen max-h-screen">
+        <div class="grid grid-flow-row-dense content-center grid-cols-2 md:grid-cols-3 md:grid-rows-3 gap-2 md:gap-4 md:p-20 max-w-screen max-h-screen">
           <div class="justify-self-end">
             <a href="/virtual-world/apology/index.html">
               <img

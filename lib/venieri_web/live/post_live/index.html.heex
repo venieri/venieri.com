@@ -1,6 +1,7 @@
+  <h1 class="text-2xl/7 font-bold text-gray-700 sm:truncate sm:text-3xl sm:tracking-tight pt-3 hidden print:block">
+    LYDIA VENIERI
+    </h1>
 
-<div class="mx-auto max-w-4xl max-h-dvh py-5  px-3  md:px-20">
-    <.navbar socket={@socket} />
     <div
   id="posts"
   phx-update="stream"
@@ -8,24 +9,27 @@
   phx-viewport-bottom={!@end_of_timeline? && JS.push("next-page", page_loading: true)}
   class={[
 
-    if(@end_of_timeline?, do: "pb-10", else: "pb-[calc(200vh)]"),
-    if(@page == 1, do: "pt-10", else: "pt-[calc(200vh)]")
+    if(@end_of_timeline?, do: "pb-3", else: "pb-[calc(200vh)]"),
+    if(@page == 1, do: "pt-3", else: "pt-[calc(200vh)]")
   ]}>
 
-        <div class="card card-xl bg-base-100 shadow-sm flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>
+        <div class="card card-xl  flex items-center justify-center" :for={{id, post} <- @streams.posts} id={id}>
+        <a name={post.slug} />
             <div class="card-body">
-                <h2 class="card-title">{post.title}</h2>
-                
+                <h2 class="card-title">   
+                    <a  href={"/posts/#{post.slug}"}>{post.title}</a>
+                </h2>
+    
                 <div class="text-xs uppercase font-semibold opacity-60">{post.post_date}</div>
                 <div class="text-xs uppercase font-semibold opacity-60">{post.venue}</div>
                 <p>{raw post.logline}</p>
             </div>
         
             <figure >
-                    <a  href={"/posts/#{post.id}"}>
+                    <a  href={"/posts/#{post.slug}"}>
                         <img 
                    
-                        src={Venieri.Archives.Posts.image_url(post, 480)} 
+                        src={Venieri.Archives.Posts.image_url(post, width: 1024)} 
                         alt="" />
 
                 </a>
@@ -35,7 +39,7 @@
     <div :if={@end_of_timeline?} class="mt-5 text-[50px] text-center">
      
     </div>
-</div>
+
 
 
      

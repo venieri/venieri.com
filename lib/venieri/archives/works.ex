@@ -38,6 +38,8 @@ defmodule Venieri.Archives.Works do
   """
   def get!(id), do: Repo.get!(Work, id)
 
+  def get_by(condition), do: Repo.get_by(Work, condition)
+
   @doc """
   Creates a work.
 

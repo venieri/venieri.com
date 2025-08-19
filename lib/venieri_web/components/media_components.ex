@@ -247,4 +247,99 @@ defmodule VenieriWeb.MediaComponents do
     <span class={[@name, @class]} />
     """
   end
+
+
+ def  m_test(media) do
+   EEx.eval_string(
+      ~S"""
+  <picture class="p-2 md:p-8">
+      <source srcset= "<%= "#{VenieriWeb.MediaComponents.media_srcset(media, 2048)}" %>"
+              type="image/avif" />
+
+    </picture>
+  """, media: media)
+ end
+
+  def media_list(media_list) do
+    EEx.eval_string(
+      ~S"""
+  <%= for media <- media_list do %>
+    <picture>
+      <source srcset= "<%= "#{VenieriWeb.MediaComponents.media_srcset(media, 2048)}" %>"
+              type="image/avif" />
+      <source srcset= "<%= "#{VenieriWeb.MediaComponents.media_srcset(media, 2048)}" %>"
+              type="image/webp" />
+      <img
+        id= <%= "img-#{media.id}" %>
+        class="object-cover w-full  py-3 md:py-5 md:h-auto"
+        alt= <%= "Lydia Venieri - {media.caption}" %>
+        src= <%= "#{Venieri.Archives.Media.url(media, width: 2048, type: "avif")}" %>
+        sizes="(max-width: 2048px) 2048px, 50vw"
+      />
+    </picture>
+<% end %>
+    """, media_list: media_list)
+  end
+
+
+  def media_grid(media_list, captions \\ true) do
+    EEx.eval_string(
+      ~S"""
+    <ul role="list" class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
+    <%= for media <- media_list do %>
+        <li class="relative">
+            <div class="group overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+                   <a href=<%= "/media/#{media.id}" %> >
+                    <img
+                        class="pointer-events-none  object-cover group-hover:opacity-75"
+                        src= <%= "#{Venieri.Archives.Media.url(media)}" %>
+                        alt= <%= "Lydie Venieri - #{media.caption}" %>
+                        />
+                        </a>
+
+            </div>
+            <%= if captions do %>
+            <p class="mt-2 block truncate text-sm font-medium text-gray-900">
+                <a href=<%= "/media/#{media.id}" %> >
+                    <%=  media.caption %>
+                </a>
+            </p>
+            <% end %>
+        </li>
+    <% end %>
+    </ul>
+    """, media_list: media_list, captions: captions)
+  end
+
+
+  def art_work(slug, options \\ []) when is_binary(slug) do
+    max_height = Keyword.get(options, :max_height, 500)
+    art_work = Venieri.Archives.Works.get_by(slug: slug)  |> Venieri.Repo.preload(:media)
+    EEx.eval_string(
+      ~S"""
+
+      <% media = art_work.media |> hd %>
+      <figure>
+                <a href=<%= "/works/#{art_work.slug}" %>><picture class="flex justify-center">
+      <source srcset= "<%= "#{VenieriWeb.MediaComponents.media_srcset(media, 2048)}" %>"
+              type="image/avif" />
+      <source srcset= "<%= "#{VenieriWeb.MediaComponents.media_srcset(media, 2048)}" %>"
+              type="image/webp" />
+ <img
+        id= <%= "img-#{media.id}" %>
+        class="py-3 md:py-5 max-h-[<%=max_height %>px] object-center"
+        alt= <%= "Lydia Venieri - #{media.caption}" %>
+        src= <%= "#{Venieri.Archives.Media.url(media, width: 2048, type: "avif")}" %>
+        sizes="(max-width: 2048px) 2048px, 50vw"
+      />
+
+    </picture>  </a>
+    <figcaption class="text-center text-sm text-gray-500">
+    <a href=<%= "/works/#{art_work.slug}" %>><%= art_work.title %></a>
+    </figcaption>
+    </figure>
+    """, art_work: art_work, max_height: max_height)
+  end
+
+
 end

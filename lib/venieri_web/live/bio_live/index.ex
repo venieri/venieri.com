@@ -41,7 +41,8 @@ defmodule VenieriWeb.BioLive.Index do
      |> assign(:bg_color, "bg-white")
      |> assign(solo_shows: solo_shows)
      |> assign(group_shows: group_shows)
-     |> assign(references: references)}
+     |> assign(references: references)
+     |> assign(view: :bio)}
 
     # {:ok,
     #  socket
